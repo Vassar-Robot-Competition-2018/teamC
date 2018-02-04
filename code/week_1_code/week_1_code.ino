@@ -1,6 +1,6 @@
 // This code was adapted from: https://www.allaboutcircuits.com/projects/servo-motor-control-with-an-arduino/
 
-#include <Servo.h> //Servo library
+include <Servo.h> //Servo library
 
 //initialize two servo objects for the connected servos
 Servo servo_test_1;   
