@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #Week 1
 
 ## The Problem
@@ -24,7 +23,3 @@ Once the servos were connected, the focus shifted to programming a...
 
 ## Pictures
 ![Our Robot](http://cubeupload.com/im/LYoL0D.jpg)
-=======
-# Week 1
-The first week notebook writeup.
->>>>>>> f03cae5026e013c53c6ef70f57bf574799e2c135
