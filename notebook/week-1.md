@@ -37,13 +37,10 @@ With the Arduino and servos communicating, it was time to craft a body to house 
 |![Top-down view](images/IMG_1936.jpg "Top-down view")
 | *Top-down view* |
 |![Closeup of the breadboard](images/IMG_1915.jpg "Closeup of the breadboard")
-|:--:|
 | *Closeup of the breadboard* |
 |![Front view](images/IMG_1922.jpg "Front view (minus the battery)")
-|:--:|
 | *Front view* |
 |![Side view](images/IMG_1938.jpg "Side view")
-|:--:|
 | *Side view* |
 
 Need to finish writing about circuit, code, and body, along with adding more pictures and acknowledgments.
