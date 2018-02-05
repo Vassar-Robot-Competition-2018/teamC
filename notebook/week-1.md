@@ -31,8 +31,9 @@ With the Arduino and servos communicating, it was time to craft a body to house 
 
 
 ## Pictures
-![Our Robot](images/IMG_1920.jpg "Our Robot")
-|*Our Robot*|
+|![Our Robot](images/IMG_1920.jpg "Our Robot")
+|:--:|
+| *Our Robot* |
 ![Top-down view](images/IMG_1936.jpg "Top-down view")
 ![Closeup of the breadboard](images/IMG_1915.jpg "Closeup of the breadboard")
 ![Front view](images/IMG_1922.jpg "Front view (minus the battery)")
