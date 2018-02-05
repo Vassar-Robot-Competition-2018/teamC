@@ -10,7 +10,7 @@ For the first week of the competition, our goal was to complete the initial mile
 Our first objective was to connect the servo motors to the Arduino...
 
 ## Code
-Once the wiring was completed, the focus shifted to programming the movement of the servos. The code we used was adapted from the following [source.](https://www.allaboutcircuits.com/projects/servo-motor-control-with-an-arduino/) For our purposes, we needed an additional servo object (since we have two) along with a call to the Arduino Servo library in order to use servo-specific functions. For the milestone, constant motor movement is preferable, so that was altered as well, as shown below. Here is a snippet of code showing how the servos are accessed and controlled:
+Once the wiring was completed, the focus shifted to programming the movement of the servos. The code we used was adapted from the following [source](https://www.allaboutcircuits.com/projects/servo-motor-control-with-an-arduino/). For our purposes, we needed an additional servo object (since we have two) along with a call to the Arduino Servo library in order to use servo-specific functions. For the milestone, constant motor movement is preferable, so that was altered as well. Here is a snippet of code showing how the servos are accessed and controlled:
 ```c++
 void setup()
 {
@@ -32,6 +32,7 @@ With the Arduino and servos communicating, it was time to craft a body to house 
 
 ## Pictures
 ![Our Robot](images/IMG_1920.jpg "Our Robot")
+|*Our Robot*|
 ![Top-down view](images/IMG_1936.jpg "Top-down view")
 ![Closeup of the breadboard](images/IMG_1915.jpg "Closeup of the breadboard")
 ![Front view](images/IMG_1922.jpg "Front view (minus the battery)")
