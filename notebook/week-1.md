@@ -22,6 +22,6 @@ Once the servos were connected, the focus shifted to programming a...
 
 
 ## Pictures
-![Our Robot](IMG_1920.jpg)
+![Our Robot](images/IMG_1920.jpg)
 
 Need to finish writing about circuit, code, and body, along with adding more pictures and acknowledgments.
