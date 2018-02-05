@@ -22,4 +22,6 @@ Once the servos were connected, the focus shifted to programming a...
 
 
 ## Pictures
-![Our Robot](http://cubeupload.com/im/LYoL0D.jpg)
+![Our Robot](https://drive.google.com/file/d/1qELNWWb8FYiGp11XOF3lLxFtWwicUT_l/view?usp=sharing)
+
+Need to finish writing about circuit, code, and body, along with adding more pictures and acknowledgments.
