@@ -4,6 +4,7 @@
 For the second week of the competition, we wanted to complete the next milestone (or get as close as possible). Specifically, our goal was to get our robot to start in the center of one of the quadrants, move toward the edge of the playing field, sense the white tape marking the boundary, move backward, and stop. The first part of this goal was already completed during week 1. To finish the remaining parts of our objective, the following was required:
 * Attach an Analog IR reflectance sensor from the Arduino to the bottom of the robot to measure different values of IR light coming from the playing field (gray surface vs. white boundary tape)
 * Program the Arduino to communicate with the IR sensor. In particular, we needed to find a way to differentiate between the playing field and boundary using sensor values and use such values to enter a new state when the edge of the field was reached.
+
 As a secondary objective, we designed a new body for our robot in hopes of increased stability and space for future components like the Pixycam.
 
 ## Attaching the IR Sensor
