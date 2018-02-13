@@ -24,21 +24,23 @@ void loop()
   int sensor_val = analogRead(IR);
   Serial.println(sensor_val);
 
-  //    servo_test_1.write(45); //command to rotate the servo to the specified angle
-  //      servo_test_2.write(135);
-
   while ((sensor_val >= 80) && (state == 0)) {
     servo_test_1.write(45); //command to rotate the servo to the specified angle
     servo_test_2.write(135);
     delay(250);
     return;
   }
-  if ((sensor_val < 80) && (sensor_val > 0) && (state == 0)) {
-    servo_test_1.write(135); //command to rotate the servo to the specified angle
+  if ((sensor_val < 80) && (state == 0)) {
+    servo_test_1.write(135); //go in reverse
     servo_test_2.write(45);
     sensor_val = 0;
     state = 1;
   }
   if (state == 1) {
     delay(3000);
- 
+    servo_test_1.write(90);
+    servo_test_2.write(90);
+  }
+}
+
+

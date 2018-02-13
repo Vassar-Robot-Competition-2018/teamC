@@ -34,11 +34,11 @@ With the Arduino and servos communicating, we were ready to craft a body to hous
 |![Our Robot](images/IMG_1920.jpg "Our Robot")
 |:--:|
 | *Our Robot* |
-|![Top-down view](images/IMG_1936.jpg "Top-down view")
+|![Top-down view](images/week1/IMG_1936.jpg "Top-down view")
 | *Top-down view* |
-|![Closeup of the breadboard](images/IMG_1915.jpg "Closeup of the breadboard")
+|![Closeup of the breadboard](images/week1/IMG_1915.jpg "Closeup of the breadboard")
 | *Closeup of the breadboard* |
-|![Front view](images/IMG_1922.jpg "Front view (minus the battery)")
+|![Front view](images/week1/IMG_1922.jpg "Front view (minus the battery)")
 | *Front view (minus the battery)* |
 
 ### Acknowledgments
