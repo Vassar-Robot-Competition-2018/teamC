@@ -31,7 +31,7 @@ With the Arduino and servos communicating, we were ready to craft a body to hous
 
 
 ## Pictures
-|![Our Robot](images/IMG_1920.jpg "Our Robot")
+|![Our Robot](images/week1/IMG_1920.jpg "Our Robot")
 |:--:|
 | *Our Robot* |
 |![Top-down view](images/week1/IMG_1936.jpg "Top-down view")

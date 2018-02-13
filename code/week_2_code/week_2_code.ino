@@ -21,7 +21,7 @@ void setup()
 void loop()
 {
 
-  int sensor_val = analogRead(IR);
+  int sensor_val = analogRead(IR); //IR is the analog port value (A0)
   Serial.println(sensor_val);
 
   while ((sensor_val >= 80) && (state == 0)) {
@@ -33,12 +33,11 @@ void loop()
   if ((sensor_val < 80) && (state == 0)) {
     servo_test_1.write(135); //go in reverse
     servo_test_2.write(45);
-    sensor_val = 0;
     state = 1;
   }
   if (state == 1) {
     delay(3000);
-    servo_test_1.write(90);
+    servo_test_1.write(90); //stop
     servo_test_2.write(90);
   }
 }
