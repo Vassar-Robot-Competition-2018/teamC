@@ -39,6 +39,7 @@ void loop()
     delay(3000);
     servo_test_1.write(90); //stop
     servo_test_2.write(90);
+    delay(3000);
   }
 }
 
