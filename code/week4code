@@ -1,0 +1,29 @@
+#include <Servo.h> //Servo library
+#include <SPI.h>
+#include <Pixy.h>
+
+
+const int SERVO_1 = 44;
+const int SERVO_2 = 45;
+const int LED_PIN = 52;
+const int IR = A3;
+
+Servo servo_test_1;
+Servo servo_test_2;
+
+//initialize Pixy cam
+Pixy pixy;
+
+void setup()
+{
+  Serial.begin(9600);
+
+  servo_test_1.attach(SERVO_1); // attach the signal pin of servo to pin44 of arduino
+  servo_test_2.attach(SERVO_2); // attach the signal pin of servo to pin45 of arduino
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop(){
+  int sensor_val = analogRead(IR);
+  Serial.println(sensor_val);
+}
