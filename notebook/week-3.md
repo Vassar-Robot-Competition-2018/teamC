@@ -41,13 +41,14 @@ The value num_blocks represents the number of blocks detected by the Pixy Cam, a
 Currently we are having some difficulty difficulty differentiating between blocks and other objects of the same colors within view of the Pixy Cam, namely the quadrant boundaries in the field. We hope to solve this by using an IR proximity sensor in tandem with the Pixy to detect when the blocks are a certain distance from the robot. We attached the IR sensor to the front of the robot, but are not currently able to detect objects at a distance greater than ~4-6 inches.
 
 ## Pictures
-|![Front View](images/week3/Front_view.jpg "Front View")
+|![Front View](images/week3/Front_view.JPG "Front View")
+|:--:|
 | *Front View* |
-|![Side View](images/week3/Side_view.jpg "Side View")
+|![Side View](images/week3/Side_view.JPG "Side View")
 | *Side View* |
-|![Closeup of the Pixy Mount](images/week3/pixy_mount.jpg "Side View")
+|![Closeup of the Pixy Mount](images/week3/pixy_mount.JPG "Side View")
 | *Closeup of the Pixy Mount* |
-|![Closeup of the IR](images/week3/IR_sensor.jpg "Closeup of the IR")
+|![Closeup of the IR](images/week3/IR_sensor.JPG "Closeup of the IR")
 | *Closeup of the IR* |
 
 ## Acknowledgments
