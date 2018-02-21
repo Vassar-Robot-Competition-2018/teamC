@@ -25,6 +25,8 @@ void setup()
   servo_test_1.attach(SERVO_1); // attach the signal pin of servo to pin44 of arduino
   servo_test_2.attach(SERVO_2); // attach the signal pin of servo to pin45 of arduino
   pinMode(LED_PIN, OUTPUT);
+
+   pixy.init();
 }
 
 void rand_cruise(int random_number) {
@@ -60,7 +62,7 @@ void sense_blocks(int front_sensor_val) {
   Serial.println(num_blocks);
   //int num_blocks = pixy.blocks[].length;
   //int num_blocks = 5;
-  /*if ((front_sensor_val > BLOCK) && (num_blocks >= 1)) {
+  if ((front_sensor_val > BLOCK) && (num_blocks >= 1)) {
     servo_test_1.write(90);
     servo_test_2.write(90);
     digitalWrite(LED_PIN, HIGH);   // turns the LED on
@@ -68,9 +70,9 @@ void sense_blocks(int front_sensor_val) {
     digitalWrite(LED_PIN, LOW);
     delay(100);
     digitalWrite(LED_PIN, HIGH);
-    delay(10000);
+    //delay(10000);
     digitalWrite(LED_PIN, LOW);
-  }*/
+  }
 }
 
 void loop() {
@@ -78,7 +80,7 @@ void loop() {
   int front_sensor_val = analogRead(IR_FRONT);
   //Serial.println(front_sensor_val);
   int random_number = rand() % 3;
-  Serial.println(random_number);
+  //Serial.println(random_number);
   rand_cruise(random_number);
   delay(500);
   sense_border(bottom_sensor_val);
