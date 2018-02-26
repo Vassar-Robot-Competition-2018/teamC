@@ -118,13 +118,14 @@ We developed a rand_cruise function that would employ a random number generator 
 Currently, we're having a small bit of trouble adjusting parameters so that our robot reliably detects blocks. As of Monday morning, our robot is *sometimes* able to find blocks, but other times it has trouble. We believe that this simply requires tuning of the PixyCam signatures and LED threshold value. This issue should be resolved early next lab.
 
 ## Pictures
-|![Front View] (images/week_4/Front_View.JPG)|
-|**Front View**|
-|![Side View](images/week_4/Side_View.JPG)|
+|![Front View](images/week_4/Front_View.JPG)
+|:--:|
+| **Front View** |
+|![Side View](images/week_4/Side_View.JPG)
 |**Side View**|
-|![Top View](images/week_4/Top_View.JPG)|
+|![Top View](images/week_4/Top_View.JPG)
 |**Top View**|
-|![View from Behind](images/week_4/View_from_Behind.JPG)|
+|![View from Behind](images/week_4/View_from_Behind.JPG)
 |**View from Behind**|
 
 ## Acknowledgements 
