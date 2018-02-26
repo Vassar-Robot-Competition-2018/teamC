@@ -5,7 +5,7 @@
 //constant variable declarations
 const int SERVO_1 = 44;
 const int SERVO_2 = 45;
-const int LED_PIN = 52;
+const int LED_PIN = 38;
 const int IR_FRONT = A3;
 const int IR_BOTTOM = A0;
 const int BORDER = 80;
@@ -63,16 +63,22 @@ void sense_blocks(int front_sensor_val) {
   //int num_blocks = pixy.blocks[].length;
   //int num_blocks = 5;
   if ((front_sensor_val > BLOCK) && (num_blocks >= 1)) {
+    Serial.println("Found a block!");
     servo_test_1.write(90);
     servo_test_2.write(90);
-    digitalWrite(LED_PIN, HIGH);   // turns the LED on
-    delay(100);
-    digitalWrite(LED_PIN, LOW);
-    delay(100);
-    digitalWrite(LED_PIN, HIGH);
-    //delay(10000);
-    digitalWrite(LED_PIN, LOW);
+    led_on();
+    delay(10000);
   }
+}
+
+void led_on() {
+  digitalWrite(LED_PIN, HIGH);   // turns the LED on
+    delay(1000);
+    digitalWrite(LED_PIN, LOW);
+    delay(1000);
+    digitalWrite(LED_PIN, HIGH);
+    delay(1000);
+    digitalWrite(LED_PIN, LOW);
 }
 
 void loop() {
