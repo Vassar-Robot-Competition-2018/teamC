@@ -9,7 +9,8 @@ const int LED_PIN = 38;
 const int IR_FRONT = A3;
 const int IR_BOTTOM = A0;
 const int BORDER = 80;
-const int BLOCK = 130;
+const int BLOCK = 300;
+int timer = 0;
 
 //initialize two servo objects for the connected servos
 Servo servo_test_1;
@@ -26,23 +27,26 @@ void setup()
   servo_test_2.attach(SERVO_2); // attach the signal pin of servo to pin45 of arduino
   pinMode(LED_PIN, OUTPUT);
 
-   pixy.init();
+  pixy.init(); // intialize pixy object
 }
 
 void rand_cruise(int random_number) {
-  //random_number = rand() % 3;
-  //int random_number = 2;
-  if (random_number == 0) {
-    servo_test_1.write(90);
-    servo_test_2.write(150);
-  }
-  else if (random_number == 1) {
-    servo_test_1.write(45);
-    servo_test_2.write(135);
-  }
-  else {
-    servo_test_1.write(180);
-    servo_test_2.write(130);
+  random_number = rand() % 3;
+  if ((millis() - timer) >= 500) {
+    Serial.println("running");
+    if (random_number == 0) {
+      servo_test_1.write(90);
+      servo_test_2.write(150);
+    }
+    else if (random_number == 1) {
+      servo_test_1.write(45);
+      servo_test_2.write(135);
+    }
+    else {
+      servo_test_1.write(180);
+      servo_test_2.write(130);
+    }
+    timer = millis();
   }
 }
 
@@ -59,38 +63,35 @@ void sense_border(int bottom_sensor_val) {
 
 void sense_blocks(int front_sensor_val) {
   int num_blocks = pixy.getBlocks();
-  Serial.println(num_blocks);
-  //int num_blocks = pixy.blocks[].length;
-  //int num_blocks = 5;
+  //Serial.println(num_blocks);
   if ((front_sensor_val > BLOCK) && (num_blocks >= 1)) {
-    Serial.println("Found a block!");
+    //Serial.println("Found a block!");
     servo_test_1.write(90);
     servo_test_2.write(90);
     led_on();
-    delay(10000);
+    delay(2000);
   }
 }
 
 void led_on() {
   digitalWrite(LED_PIN, HIGH);   // turns the LED on
-    delay(1000);
-    digitalWrite(LED_PIN, LOW);
-    delay(1000);
-    digitalWrite(LED_PIN, HIGH);
-    delay(1000);
-    digitalWrite(LED_PIN, LOW);
+  delay(100);
+  digitalWrite(LED_PIN, LOW);
+  delay(100);
+  digitalWrite(LED_PIN, HIGH);
+  delay(100);
+  digitalWrite(LED_PIN, LOW);
 }
 
 void loop() {
+  //timer = millis();
   int bottom_sensor_val = analogRead(IR_BOTTOM);
   int front_sensor_val = analogRead(IR_FRONT);
-  //Serial.println(front_sensor_val);
+  //Serial.println(bottom_sensor_val);
   int random_number = rand() % 3;
   //Serial.println(random_number);
   rand_cruise(random_number);
-  delay(500);
   sense_border(bottom_sensor_val);
   sense_blocks(front_sensor_val);
-  //delay(300);
 }
 
