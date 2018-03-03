@@ -1,3 +1,4 @@
+
 #include <Servo.h> //Servo library
 #include <SPI.h>
 #include <Pixy.h>
@@ -9,7 +10,7 @@ const int LED_PIN = 38;
 const int IR_FRONT = A3;
 const int IR_BOTTOM = A0;
 const int BORDER = 80;
-const int BLOCK = 300;
+const int BLOCK = 150;
 int timer = 0;
 
 //initialize two servo objects for the connected servos
@@ -31,24 +32,22 @@ void setup()
 }
 
 void rand_cruise(int random_number) {
-  random_number = rand() % 3;
-  if ((millis() - timer) >= 500) {
-    Serial.println("running");
-    if (random_number == 0) {
-      servo_test_1.write(90);
-      servo_test_2.write(150);
-    }
-    else if (random_number == 1) {
-      servo_test_1.write(45);
-      servo_test_2.write(135);
-    }
-    else {
-      servo_test_1.write(180);
-      servo_test_2.write(130);
-    }
-    timer = millis();
+  random_number = rand() % 4;
+  if (random_number == 0) {
+    servo_test_1.write(90);
+    servo_test_2.write(150);
   }
+  else if (random_number == 1) {
+    servo_test_1.write(45);
+    servo_test_2.write(135);
+  }
+  else {
+    servo_test_1.write(180);
+    servo_test_2.write(130);
+  }
+  delay(250);
 }
+
 
 void sense_border(int bottom_sensor_val) {
   if (bottom_sensor_val < BORDER) {
@@ -64,7 +63,7 @@ void sense_border(int bottom_sensor_val) {
 void sense_blocks(int front_sensor_val) {
   int num_blocks = pixy.getBlocks();
   //Serial.println(num_blocks);
-  if ((front_sensor_val > BLOCK) && (num_blocks >= 1)) {
+  if ((front_sensor_val >= BLOCK) && (num_blocks >= 1)) {
     //Serial.println("Found a block!");
     servo_test_1.write(90);
     servo_test_2.write(90);
@@ -87,7 +86,7 @@ void loop() {
   //timer = millis();
   int bottom_sensor_val = analogRead(IR_BOTTOM);
   int front_sensor_val = analogRead(IR_FRONT);
-  //Serial.println(bottom_sensor_val);
+  Serial.println(front_sensor_val);
   int random_number = rand() % 3;
   //Serial.println(random_number);
   rand_cruise(random_number);
