@@ -49,6 +49,8 @@ void loop() {
   servo_test_1.write(45);
   servo_test_2.write(135);
   found_color();
+
+  
 }
 
 void found_color() {
@@ -79,6 +81,13 @@ void found_color() {
     state = 1;
   } else {
     Serial.println("I didn't find anything.");
+    Serial.print("Color Temp: "); Serial.print(colorTemp, DEC); Serial.print(" K - ");
+  Serial.print("Lux: "); Serial.print(lux, DEC); Serial.print(" - ");
+  Serial.print("R: "); Serial.print(r, DEC); Serial.print(" ");
+  Serial.print("G: "); Serial.print(g, DEC); Serial.print(" ");
+  Serial.print("B: "); Serial.print(b, DEC); Serial.print(" ");
+  Serial.print("C: "); Serial.print(c, DEC); Serial.print(" ");
+  Serial.println(" ");
     }
 }
 
