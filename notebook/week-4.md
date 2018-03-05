@@ -11,9 +11,9 @@ The battery was located at the rear of our robot. The battery is among the most 
 
 
 ## Code
-As we made substantial changes to our code, it is added below in its entirety for convenience. 
+As we made substantial changes to our code, it is added below in its entirety for convenience.
 
-```{c}
+```c++
 #include <Servo.h> //Servo library
 #include <SPI.h>
 #include <Pixy.h>
@@ -118,15 +118,15 @@ We developed a rand_cruise function that would employ a random number generator 
 Currently, we're having a small bit of trouble adjusting parameters so that our robot reliably detects blocks. As of Monday morning, our robot is *sometimes* able to find blocks, but other times it has trouble. We believe that this simply requires tuning of the PixyCam signatures and LED threshold value. This issue should be resolved early next lab.
 
 ## Pictures
-|![Front View](images/week_4/Front_View.JPG)
+|![Front View](images/week4/Front_View.JPG)
 |:--:|
 | **Front View** |
-|![Side View](images/week_4/Side_View.JPG)
+|![Side View](images/week4/Side_View.JPG)
 |**Side View**|
-|![Top View](images/week_4/Top_View.JPG)
+|![Top View](images/week4/Top_View.JPG)
 |**Top View**|
-|![View from Behind](images/week_4/View_from_Behind.JPG)
+|![View from Behind](images/week4/View_from_Behind.JPG)
 |**View from Behind**|
 
-## Acknowledgements 
-Amy and John worked on redesigning the chassis of the robot while Frank wrote the code that would instantiate the agreed-upon behavior. Amy, Frank, and John all helped debug the robot when it was misbehaving. 
+## Acknowledgements
+Amy and John worked on redesigning the chassis of the robot while Frank wrote the code that would instantiate the agreed-upon behavior. Amy, Frank, and John all helped debug the robot when it was misbehaving.
