@@ -11,7 +11,10 @@ const int IR_FRONT = A3;
 const int IR_BOTTOM = A0;
 const int BORDER = 80;
 const int BLOCK = 150;
-int timer = 0;
+const int GREEN_PIN = 5; // Green RGB LED pin
+const int BLUE_PIN = 6; // Blue RGB LED pin
+const int RED_PIN = 7; // Red RGB LED pin
+
 
 //initialize two servo objects for the connected servos
 Servo servo_test_1;
@@ -26,7 +29,9 @@ void setup()
 
   servo_test_1.attach(SERVO_1); // attach the signal pin of servo to pin44 of arduino
   servo_test_2.attach(SERVO_2); // attach the signal pin of servo to pin45 of arduino
-  pinMode(LED_PIN, OUTPUT);
+  pinMode(BLUE_PIN, OUTPUT); 
+  pinMode(RED_PIN, OUTPUT);
+  pinMode(GREEN_PIN, OUTPUT);
 
   pixy.init(); // intialize pixy object
 }
@@ -64,33 +69,45 @@ void sense_blocks(int front_sensor_val) {
   int num_blocks = pixy.getBlocks();
   //Serial.println(num_blocks);
   if ((front_sensor_val >= BLOCK) && (num_blocks >= 1)) {
-    //Serial.println("Found a block!");
+    Serial.println("Found a block!");
     servo_test_1.write(90);
     servo_test_2.write(90);
     led_on();
     delay(2000);
+    led_off();
   }
 }
 
 void led_on() {
-  digitalWrite(LED_PIN, HIGH);   // turns the LED on
-  delay(100);
-  digitalWrite(LED_PIN, LOW);
-  delay(100);
-  digitalWrite(LED_PIN, HIGH);
-  delay(100);
-  digitalWrite(LED_PIN, LOW);
+  setColor(0,0,0);
+}
+
+void led_off() {
+  setColor(255,255,255);
 }
 
 void loop() {
   //timer = millis();
+  led_off();
   int bottom_sensor_val = analogRead(IR_BOTTOM);
   int front_sensor_val = analogRead(IR_FRONT);
   Serial.println(front_sensor_val);
   int random_number = rand() % 3;
   //Serial.println(random_number);
   rand_cruise(random_number);
-  sense_border(bottom_sensor_val);
+  //sense_border(bottom_sensor_val);
   sense_blocks(front_sensor_val);
 }
 
+
+void setColor(int red, int green, int blue)
+{
+#ifdef COMMON_ANODE
+  red = 255 - red;
+  green = 255 - green;
+  blue = 255 - blue;
+#endif
+  analogWrite(RED_PIN, red);
+  analogWrite(GREEN_PIN, green);
+  analogWrite(BLUE_PIN, blue);
+}
