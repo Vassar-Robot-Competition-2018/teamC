@@ -139,7 +139,10 @@ For Week 6, our goal is to complete the final milestone (milestone 4). That is, 
 |**View of the Breadboard**|
 
 ## Videos
-Videos of milestone completions are included in teamC/notebook/videos.
+[Milestone 3 (part 1)](goo.gl/eQqmVm)
+[Milestone 3 (part 2)](goo.gl/BEWKg9)
+[Milestone 5](https://goo.gl/TXcpVX)
+[Milestone 6](https://goo.gl/cpNkZH) 
 
 ## Acknowledgements
 Everyone worked on making additions to the robot and designing code to complete each milestone.
