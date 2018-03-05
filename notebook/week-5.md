@@ -131,8 +131,8 @@ For Week 6, our goal is to complete the final milestone (milestone 4). That is, 
 |**Side View**|
 |![Top View](images/week5/week5-robot-topview.JPG)
 |**Top View**|
-|![IR Bottom View](images/week5/week5-IR-bottomview.JPG)
-|**IR Bottom View**|
+|![RGB Sensor Bottom View](images/week5/week5-IR-bottomview.JPG)
+|**RGB Sensor Bottom View**|
 |![IR Front View](images/week5/week5-IR-frontview.JPG)
 |**IR Front View**|
 |![Breadboard](images/week5/week5-breadboard.JPG)
