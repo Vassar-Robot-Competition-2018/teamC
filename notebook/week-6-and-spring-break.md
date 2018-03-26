@@ -119,6 +119,7 @@ having the structure compact assuages the concern that a part may be weighing th
 With all of this said, the final print came out surprisingly well:
 
 ## Pictures of New Chassis
+(it reminds me of a tractor or some other kind of farm vehicle?)
 |![Front View](images/week-6/Front_View.JPG)
 |:--:|
 | **Front View** |
@@ -137,3 +138,5 @@ can detect the boundary to avoid falling out of bounds.
 With the new chassis and hopefully the soon-to-be-created block-capturing mechanism, we hope to race through the next few milestones and narrow down
 exaclty how we plan to tackle the competition itself.
 
+## Acknowledgements
+Everyone worked on each different part of the milestone 4 attempt. John printed the new chassis over Spring Break.
