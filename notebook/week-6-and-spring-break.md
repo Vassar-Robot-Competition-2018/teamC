@@ -120,6 +120,7 @@ With all of this said, the final print came out surprisingly well:
 
 ## Pictures of New Chassis
 (it reminds me of a tractor or some other kind of farm vehicle?)
+
 |![Front View](images/week-6/Front_View.JPG)
 |:--:|
 | **Front View** |
