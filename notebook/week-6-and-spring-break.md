@@ -127,7 +127,7 @@ With all of this said, the final print came out surprisingly well:
 |**Side View**|
 |![Top View](images/week-6/Top_View.JPG)
 |**Top View**|
-|![Back View](images/week6/Back_View.JPG)
+|![Back View](images/week-6/Back_View.JPG)
 |**Back View**|
 
 ## Next Steps
