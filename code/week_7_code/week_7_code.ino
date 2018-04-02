@@ -78,16 +78,12 @@ void rotate() {
 
 void detect_quadrant() {
   uint16_t r, g, b, c, colorTemp, lux;
-
   // calling tcs methods to access color, lux, and temperature values
   tcs.getRawData(&r, &g, &b, &c);
   colorTemp = tcs.calculateColorTemperature(r, g, b);
   lux = tcs.calculateLux(r, g, b);
-
   if (target_color == 0) {
     drive();
-
-
     // Yellow
     if (lux > 20) {
       //  when lux is above 20, the sensor is on the tape
@@ -147,6 +143,37 @@ void border() {
 }
 
 void sense_blocks(int front_sensor_val) {
+  int num_blocks = pixy.getBlocks();
+  //Serial.println(num_blocks);
+  for (int i = 0; i < num_blocks; i++) {
+    if (pixy.blocks[i].signature == target_color) {
+      while (pixy.blocks[0].signature != target_color) {
+        if (pixy.blocks[i].x < 130) {
+          servo_test_1.write(45);
+          servo_test_2.write(155);
+          delay(100);
+        }
+        else if ((pixy.blocks[i].x >= 130) && (pixy.blocks[i].x <= 160)) {
+          servo_test_1.write(45);
+          servo_test_2.write(135);
+          delay(100);
+        }
+        else if (pixy.blocks[i].x > 160) {
+          servo_test_1.write(25);
+          servo_test_2.write(135);
+          delay(100);
+        }
+      }
+      if (front_sensor_val >= BLOCK) {
+        signal_block();
+      }
+    }
+    else {
+      rotate();
+      delay(500);
+    }
+  }
+}) {
   int num_blocks = pixy.getBlocks();
   //Serial.println(num_blocks);
   for (int i = 0; i < num_blocks; i++) {
