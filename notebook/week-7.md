@@ -44,7 +44,9 @@ In this method, we check to see if the block(s) captured by the PixyCam match ou
 Once we are able to verify that we can accurately sense a block that matches our home quadrant, the next step is to move the block back to where we started. A foreseeable challenge is having the robot align with the block to move it with repeated accuracy.
 
 ## Moving Blocks
-...
+To move blocks, we designed two curved wedges that connect to the front of the robot on either side of the long-range IR sensor (pictured below). The curved edge of the wedge was designed to ensure that blocks are "guided" more easily towards the IR (which would be the region that holds blocks). These wedges also serve a dual purpose. Beneath each wedge is an RGB sensor, which ensures that no matter how we approach the white tape while driving forward, the tape would be detected and our robot will not go out of bounds. 
+
+Ideally, these wedges should be a simple method of capturing blocks. Tests will determine if we need to make this addition to our robot more complicated, or if this solution is adequate for this task.
 
 ## Next Steps
 Our current focus is to run our current code on the robot and troubleshoot any potential issues that arise. Once completed, we can start to work on code that allows us to move blocks around the playing field.
