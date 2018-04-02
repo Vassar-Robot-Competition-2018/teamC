@@ -1,7 +1,7 @@
 # Week 7
 
 ## Goals
-The primary goal for this week was to progress toward completing Milestone 7. That is, we needed to find and signal that we found a block in the playing field that matches our starting quadrant. To do this, we had to modify our existing code to include further block-sensing capabilities. Our secondary goal was to add the ability to move blocks in order to complete Milestone 4 and progress further in the competition.
+The primary goal for this week was to progress toward completing Milestone 7. That is, we needed to find and signal that we found a block in the playing field that matches our starting quadrant. To do this, we had to modify our existing code to include further block-sensing capabilities. Our secondary goal was to add the ability to move blocks in order to progress further in the competition.
 
 ## Milestone 7
 The existing code was updated to allow for state-based behavior. A new target_color variable was added to change the behavior of the robot based on which quadrant the bot started in. Our detect_quadrant() function (previously sense_border) was modified to change the target_color to the color of the first line it drives over. The sense_blocks function was also overhauled, using the target_color value and PixyCam information to guide the movement of the robot, as shown in the code below:
@@ -43,14 +43,14 @@ void sense_blocks(int front_sensor_val) {
 In this method, we check to see if the block(s) captured by the PixyCam match our target_color. While the largest block on screen (first element of the pixy.blocks array) is not the one we are looking for, we move the direction of the robot to the left or right depending on where the other captured blocks are. If we are in close enough range that our IR distance sensor captures the block, we will signal that we found a block. Otherwise, we rotate and run the method again. At this time, we are unsure if this method will work as written since we were also modifying the chassis at the same time, prohibiting testing.
 Once we are able to verify that we can accurately sense a block that matches our home quadrant, the next step is to move the block back to where we started. A foreseeable challenge is having the robot align with the block to move it with repeated accuracy.
 
-## Moving Blocks (Milestone 4)
+## Moving Blocks
 ...
 
 ## Next Steps
 Our current focus is to run our current code on the robot and troubleshoot any potential issues that arise. Once completed, we can start to work on code that allows us to move blocks around the playing field.
 
 ## Pictures
-...
+Will be added soon.
 
 ## Acknowledgments
 John worked on designing and printing the 3D parts needed for providing our robot with proper block-moving abilities. Amy and Frank worked on programming the detect_quadrant() and sense_blocks() methods to add further capabilities.
