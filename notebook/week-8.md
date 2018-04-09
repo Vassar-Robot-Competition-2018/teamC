@@ -29,6 +29,14 @@ Hopefully in next week we will get all of our components working like before so 
 
 ## Pictures
 
+|![Front View](images/week8/IMG_7216.jpg "Front View")
+|:--:|
+| *Front View* |
+|![Top-down view](images/week8/IMG_7217.jpg "Top-down view")
+| *Top-down view* |
+|![Breadboard](images/week8/IMG_7219.jpg "Breadboard")
+| *Breadboard* |
+
 
 ## Acknowledgments
 Amy and Frank worked on rewiring the LEDs and sensors, while John finished work on the body of the robot. John, Frank, and Amy all worked on adding the new RGB sensor and updating the code to be compatable with 2 RGB sensors.
