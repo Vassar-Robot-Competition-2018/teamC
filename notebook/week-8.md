@@ -21,11 +21,11 @@ void detect_quadrant_left() {
   Serial.println("got lux");
 ```
 
-In this method, we print comments to the serial monitor that report on the progress of the program. This is how we found that our new library was unable to calculate color temp. This means that moving forward, we will need to either find a different way to calculate color temp, or figure out how to defferentiate between the quadrants without it. This will probably be our next step in progressing through milestone 7.
+In this method, we print comments to the serial monitor that report on the progress of the program. This is how we found that our new library was unable to calculate color temp. This means that moving forward, we will need to either find a different way to calculate color temp, or figure out how to differentiate between the quadrants without it. This will probably be our next step in progressing through milestone 7.
 
 
 ## Next Steps
-Hopefully in the next week we will get all of our components working like before so we can move on to running and editing our code.
+Hopefully in next week we will get all of our components working like before so we can move on to running and editing our code.
 
 ## Pictures
 
