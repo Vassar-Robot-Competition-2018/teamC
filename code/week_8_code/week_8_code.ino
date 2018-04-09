@@ -3,7 +3,7 @@
 #include <SPI.h>
 #include <Pixy.h>
 #include <Wire.h>
-#include <SoftwareWire.h>
+//#include <SoftwareWire.h>
 // #include <Adafruit_TCS34725.h> // RGB Color Sensor
 #include "Adafruit_TCS34725softi2c.h"
 
@@ -43,8 +43,8 @@ Pixy pixy;
 #define SCLpin2 40 // right sensor
 
 // Initialize the RGB sensors
-Adafruit_TCS34725softi2c tcs1 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_700MS, TCS34725_GAIN_1X, SDApin1, SCLpin2);
-Adafruit_TCS34725softi2c tcs2 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_700MS, TCS34725_GAIN_1X, SDApin2, SCLpin2);
+Adafruit_TCS34725softi2c tcs1 = Adafruit_TCS34725softi2c(SDApin1, SCLpin1);
+Adafruit_TCS34725softi2c tcs2 = Adafruit_TCS34725softi2c(SDApin2, SCLpin2);
 
 void setup() {
   // put your setup code here, to run once:
@@ -67,17 +67,17 @@ void loop() {
   Serial.println(target_color);
   detect_quadrant_right();
   Serial.println(target_color);
-  border_left();
-  border_right();
-  int front_sensor_val = analogRead(IR_FRONT);
-  sense_blocks(front_sensor_val);
+  //border_left();
+  //border_right();
+  //int front_sensor_val = analogRead(IR_FRONT);
+  //sense_blocks(front_sensor_val);
 }
 
 void drive() {
   // drive in a "straight" line
   Serial.println("Driving!");
-  servo_test_1.write(45);
-  servo_test_2.write(135);
+  servo_test_1.write(135);
+  servo_test_2.write(45);
 }
 
 void reverse() {
@@ -97,145 +97,196 @@ void detect_quadrant_left() {
   Serial.println("established uint16_ts");
   tcs1.getRawData(&r, &g, &b, &c);
   Serial.println("got raw data");
-  colorTemp = tcs1.calculateColorTemperature(r, g, b);
-  Serial.println("calculated color temp");
-  lux = tcs1.calculateLux(r, g, b);
-  Serial.println("got lux");
+  //  colorTemp = tcs1.calculateColorTemperature(r, g, b);
+  //  Serial.println("calculated color temp");
+  //  lux = tcs1.calculateLux(r, g, b);
+  //  Serial.println("got lux");
 
   if (target_color == 0) {
     Serial.println("passed if statement");
     drive();
     // Yellow
-    if (lux > 20) {
-      //  when lux is above 20, the sensor is on the tape
-      if (((r > b) && (g > b) && (r > g)) && (b < 60) && (colorTemp < 4000)) {
-        // yellow tape
-        setColor(0, 150, 255);
-        target_color = YELLOW;
-        Serial.println("Found Yellow!");
-      } else if (((colorTemp > 8300) && (colorTemp < 8700)) && ((lux > 100) && (lux < 200))) {
-        // white tape
-        Serial.println("Reversing!");
-        // back up, wait, then rotate
-        reverse();
-        delay(1000);
-        rotate();
-        delay(2000);
-        return;
-      } else if (((g > r) && (g > b) && (b > r)) && ((r < 50) && (b < 50)) && (colorTemp < 6000)) {
-        // green tape
-        setColor(255, 100, 255);
-        target_color = GREEN;
-        Serial.println("Found Green!");
-      } else if (((r > g) && (r > b)) && ((g < 40) && (b < 40))) {
-        // red tape
-        setColor(0, 255, 255);
-        target_color = RED;
-        Serial.println("Found Red!");
-      } else if (((b > g) && (b > r)) && ((r < 50) && (g < 100)) && (lux < 60) && (colorTemp > 40000)) {
-        // blue tape
-        setColor(255, 255, 0);
-        target_color = BLUE;
-        Serial.println("Found Blue!");
-      }
-      Serial.println("passed total lux if statement");
+    //if (lux > 20) {
+    //  when lux is above 20, the sensor is on the tape
+    if (((r > b) && (g > b) && (r > g) && (b < 60))) { //&& (colorTemp < 4000)) {
+      // yellow tape
+      setColor(0, 150, 255);
+      target_color = YELLOW;
+      Serial.println("Found Yellow!");
+      //      } else if (((colorTemp > 8300) && (colorTemp < 8700)) && ((lux > 100) && (lux < 200))) {
+      //        // white tape
+      //        Serial.println("Reversing!");
+      //        // back up, wait, then rotate
+      //        reverse();
+      //        delay(1000);
+      //        rotate();
+      //        delay(2000);
+      //        return;
+    } else if (((g > r) && (g > b) && (b > r)) && ((r < 50) && (b < 50))) { //&& (colorTemp < 6000)) {
+      // green tape
+      setColor(255, 100, 255);
+      target_color = GREEN;
+      Serial.println("Found Green!");
+    } else if (((r > g) && (r > b)) && ((g < 40) && (b < 40))) {
+      // red tape
+      setColor(0, 255, 255);
+      target_color = RED;
+      Serial.println("Found Red!");
+    } else if (((b > g) && (b > r)) && ((r < 50) && (g < 100))) { //&& (lux < 60) && (colorTemp > 40000)) {
+      // blue tape
+      setColor(255, 255, 0);
+      target_color = BLUE;
+      Serial.println("Found Blue!");
     }
-    Serial.println("passed total target_color if statement");
+    //Serial.println("passed total lux if statement");
   }
+  //Serial.println("passed total target_color if statement");
 }
+
+//void detect_quadrant_right() {
+//  uint16_t r, g, b, c, colorTemp, lux;
+//  Serial.println("established uint16_ts");
+//  tcs2.getRawData(&r, &g, &b, &c);
+//  Serial.println("got raw data");
+//  colorTemp = tcs2.calculateColorTemperature(r, g, b);
+//  Serial.println("calculated color temp");
+//  lux = tcs2.calculateLux(r, g, b);
+//  Serial.println("got lux");
+//
+//  if (target_color == 0) {
+//    Serial.println("passed if statement");
+//    drive();
+//    // Yellow
+//    if (lux > 20) {
+//      //  when lux is above 20, the sensor is on the tape
+//      if (((r > b) && (g > b) && (r > g)) && (b < 60) && (colorTemp < 4000)) {
+//        // yellow tape
+//        setColor(0, 150, 255);
+//        target_color = YELLOW;
+//        Serial.println("Found Yellow!");
+//      } else if (((colorTemp > 8300) && (colorTemp < 8700)) && ((lux > 100) && (lux < 200))) {
+//        // white tape
+//        Serial.println("Reversing!");
+//        // back up, wait, then rotate
+//        reverse();
+//        delay(1000);
+//        rotate();
+//        delay(2000);
+//        return;
+//      } else if (((g > r) && (g > b) && (b > r)) && ((r < 50) && (b < 50)) && (colorTemp < 6000)) {
+//        // green tape
+//        setColor(255, 100, 255);
+//        target_color = GREEN;
+//        Serial.println("Found Green!");
+//      } else if (((r > g) && (r > b)) && ((g < 40) && (b < 40))) {
+//        // red tape
+//        setColor(0, 255, 255);
+//        target_color = RED;
+//        Serial.println("Found Red!");
+//      } else if (((b > g) && (b > r)) && ((r < 50) && (g < 100)) && (lux < 60) && (colorTemp > 40000)) {
+//        // blue tape
+//        setColor(255, 255, 0);
+//        target_color = BLUE;
+//        Serial.println("Found Blue!");
+//      }
+//      Serial.println("passed total lux if statement");
+//    }
+//    Serial.println("passed total target_color if statement");
+//  }
+//}
 
 void detect_quadrant_right() {
   uint16_t r, g, b, c, colorTemp, lux;
   Serial.println("established uint16_ts");
-  tcs2.getRawData(&r, &g, &b, &c);
+  tcs1.getRawData(&r, &g, &b, &c);
   Serial.println("got raw data");
-  colorTemp = tcs2.calculateColorTemperature(r, g, b);
-  Serial.println("calculated color temp");
-  lux = tcs2.calculateLux(r, g, b);
-  Serial.println("got lux");
+  //  colorTemp = tcs1.calculateColorTemperature(r, g, b);
+  //  Serial.println("calculated color temp");
+  //  lux = tcs1.calculateLux(r, g, b);
+  //  Serial.println("got lux");
 
   if (target_color == 0) {
     Serial.println("passed if statement");
     drive();
     // Yellow
-    if (lux > 20) {
-      //  when lux is above 20, the sensor is on the tape
-      if (((r > b) && (g > b) && (r > g)) && (b < 60) && (colorTemp < 4000)) {
-        // yellow tape
-        setColor(0, 150, 255);
-        target_color = YELLOW;
-        Serial.println("Found Yellow!");
-      } else if (((colorTemp > 8300) && (colorTemp < 8700)) && ((lux > 100) && (lux < 200))) {
-        // white tape
-        Serial.println("Reversing!");
-        // back up, wait, then rotate
-        reverse();
-        delay(1000);
-        rotate();
-        delay(2000);
-        return;
-      } else if (((g > r) && (g > b) && (b > r)) && ((r < 50) && (b < 50)) && (colorTemp < 6000)) {
-        // green tape
-        setColor(255, 100, 255);
-        target_color = GREEN;
-        Serial.println("Found Green!");
-      } else if (((r > g) && (r > b)) && ((g < 40) && (b < 40))) {
-        // red tape
-        setColor(0, 255, 255);
-        target_color = RED;
-        Serial.println("Found Red!");
-      } else if (((b > g) && (b > r)) && ((r < 50) && (g < 100)) && (lux < 60) && (colorTemp > 40000)) {
-        // blue tape
-        setColor(255, 255, 0);
-        target_color = BLUE;
-        Serial.println("Found Blue!");
-      }
-      Serial.println("passed total lux if statement");
+    //if (lux > 20) {
+    //  when lux is above 20, the sensor is on the tape
+    if (((r > b) && (g > b) && (r > g) && (b < 60))) { //&& (colorTemp < 4000)) {
+      // yellow tape
+      setColor(0, 150, 255);
+      target_color = YELLOW;
+      Serial.println("Found Yellow!");
+      //      } else if (((colorTemp > 8300) && (colorTemp < 8700)) && ((lux > 100) && (lux < 200))) {
+      //        // white tape
+      //        Serial.println("Reversing!");
+      //        // back up, wait, then rotate
+      //        reverse();
+      //        delay(1000);
+      //        rotate();
+      //        delay(2000);
+      //        return;
+    } else if (((g > r) && (g > b) && (b > r)) && ((r < 50) && (b < 50))) { //&& (colorTemp < 6000)) {
+      // green tape
+      setColor(255, 100, 255);
+      target_color = GREEN;
+      Serial.println("Found Green!");
+    } else if (((r > g) && (r > b)) && ((g < 40) && (b < 40))) {
+      // red tape
+      setColor(0, 255, 255);
+      target_color = RED;
+      Serial.println("Found Red!");
+    } else if (((b > g) && (b > r)) && ((r < 50) && (g < 100))) { //&& (lux < 60) && (colorTemp > 40000)) {
+      // blue tape
+      setColor(255, 255, 0);
+      target_color = BLUE;
+      Serial.println("Found Blue!");
     }
-    Serial.println("passed total target_color if statement");
+    //Serial.println("passed total lux if statement");
   }
+  //Serial.println("passed total target_color if statement");
+
 }
-void border_left() {
-  uint16_t r, g, b, c, colorTemp, lux;
-
-  // calling tcs methods to access color, lux, and temperature values
-  tcs1.getRawData(&r, &g, &b, &c);
-  colorTemp = tcs1.calculateColorTemperature(r, g, b);
-  lux = tcs1.calculateLux(r, g, b);
-
-
-  if (((colorTemp > 8300) && (colorTemp < 8700)) && ((lux > 100) && (lux < 200))) {
-    // white tape
-    Serial.println("Reversing!");
-    // back up, wait, then rotate
-    reverse();
-    delay(1000);
-    rotate();
-    delay(2000);
-    return;
-  }
-}
-
-void border_right() {
-  uint16_t r, g, b, c, colorTemp, lux;
-
-  // calling tcs methods to access color, lux, and temperature values
-  tcs2.getRawData(&r, &g, &b, &c);
-  colorTemp = tcs2.calculateColorTemperature(r, g, b);
-  lux = tcs2.calculateLux(r, g, b);
-
-
-  if (((colorTemp > 8300) && (colorTemp < 8700)) && ((lux > 100) && (lux < 200))) {
-    // white tape
-    Serial.println("Reversing!");
-    // back up, wait, then rotate
-    reverse();
-    delay(1000);
-    rotate();
-    delay(2000);
-    return;
-  }
-}
+//void border_left() {
+//  uint16_t r, g, b, c, colorTemp, lux;
+//
+//  // calling tcs methods to access color, lux, and temperature values
+//  tcs1.getRawData(&r, &g, &b, &c);
+//  colorTemp = tcs1.calculateColorTemperature(r, g, b);
+//  lux = tcs1.calculateLux(r, g, b);
+//
+//
+//  if (((colorTemp > 8300) && (colorTemp < 8700)) && ((lux > 100) && (lux < 200))) {
+//    // white tape
+//    Serial.println("Reversing!");
+//    // back up, wait, then rotate
+//    reverse();
+//    delay(1000);
+//    rotate();
+//    delay(2000);
+//    return;
+//  }
+//}
+//
+//void border_right() {
+//  uint16_t r, g, b, c, colorTemp, lux;
+//
+//  // calling tcs methods to access color, lux, and temperature values
+//  tcs2.getRawData(&r, &g, &b, &c);
+//  colorTemp = tcs2.calculateColorTemperature(r, g, b);
+//  lux = tcs2.calculateLux(r, g, b);
+//
+//
+//  if (((colorTemp > 8300) && (colorTemp < 8700)) && ((lux > 100) && (lux < 200))) {
+//    // white tape
+//    Serial.println("Reversing!");
+//    // back up, wait, then rotate
+//    reverse();
+//    delay(1000);
+//    rotate();
+//    delay(2000);
+//    return;
+//  }
+//}
 
 void sense_blocks(int front_sensor_val) {
   int num_blocks = pixy.getBlocks();
