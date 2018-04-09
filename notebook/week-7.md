@@ -51,8 +51,5 @@ Ideally, these wedges should be a simple method of capturing blocks. Tests will 
 ## Next Steps
 Our current focus is to run our current code on the robot and troubleshoot any potential issues that arise. Once completed, we can start to work on code that allows us to move blocks around the playing field.
 
-## Pictures
-Will be added soon.
-
 ## Acknowledgments
 John worked on designing and printing the 3D parts needed for providing our robot with proper block-moving abilities. Amy and Frank worked on programming the detect_quadrant() and sense_blocks() methods to add further capabilities.
