@@ -37,8 +37,8 @@ Pixy pixy;
 
 
 // You can use any digital pin for emulate SDA / SCL
-#define SDApin1 24 // left sensor
-#define SCLpin1 26 // left sensor
+#define SDApin1 35 // left sensor
+#define SCLpin1 37 // left sensor
 #define SDApin2 34 // right sensor
 #define SCLpin2 36 // right sensor
 
@@ -64,18 +64,18 @@ void loop() {
   // put your main code here, to run repeatedly:
   drive();
   detect_quadrant_left();
-  Serial.println(target_color);
+  //Serial.println(target_color);
   detect_quadrant_right();
-  Serial.println(target_color);
-  border_left();
-  border_right();
-//  int front_sensor_val = analogRead(IR_FRONT);
-//  sense_blocks(front_sensor_val);
+  //Serial.println(target_color);
+  //border_left();
+  //border_right();
+  //  int front_sensor_val = analogRead(IR_FRONT);
+  //  sense_blocks(front_sensor_val);
 }
 
 void drive() {
   // drive in a "straight" line
-  Serial.println("Driving!");
+  //Serial.println("Driving!");
   servo_test_1.write(45);
   servo_test_2.write(135);
 }
@@ -95,17 +95,17 @@ void rotate() {
 void detect_quadrant_left() {
   uint16_t clear, red, green, blue, lux;
   tcs1.getRawData(&red, &green, &blue, &clear);
-  Serial.println("got raw data for tcs1");
   lux = tcs1.calculateLux(red, green, blue);
-  Serial.println("got lux for tcs1");
 
   if (target_color == 0) {
     drive();
     // Yellow
-    if (lux > 3000) {
-      Serial.println(lux);
+    Serial.println(lux);
+    if (lux > 2000) {
+      //Serial.println(lux);
+      Serial.println("Got lux");
       //  when lux is above 3000, the sensor is on the tape
-      if ((red > blue) && (green > blue) && (red >= 6000) && (red <= 8000)) { //&& (colorTemp < 4000)) {
+      if ((red > blue) && (green > blue) && (red >= 7200) && (red <= 7600)) {
         // yellow tape
         setColor(0, 150, 255);
         target_color = YELLOW;
@@ -119,17 +119,17 @@ void detect_quadrant_left() {
         rotate();
         delay(2000);
         return;
-      } else if ((green > red) && (green > blue) && (green >= 6000) && (green <= 8000)) {
+      } else if ((green > red) && (green > blue) && (green >= 2800) && (green <= 3200)) {
         // green tape
         setColor(255, 100, 255);
         target_color = GREEN;
         Serial.println("Found Green!");
-      } else if ((red > green) && (red > blue) && (red >= 3000) && (red < 5000)) {
+      } else if ((red > green) && (red > blue) && (red >= 2500) && (red < 3100)) {
         // red tape
         setColor(0, 255, 255);
         target_color = RED;
         Serial.println("Found Red!");
-      } else if ((blue > green) && (blue > red) && (green < red) && (blue > 6500) && (blue < 8000)) {
+      } else if ((blue > green) && (blue > red) && (green > red) && (blue > 7300) && (blue < 7700)) {
         // blue tape
         setColor(255, 255, 0);
         target_color = BLUE;
@@ -141,25 +141,21 @@ void detect_quadrant_left() {
 
 void detect_quadrant_right() {
   uint16_t clear, red, green, blue, colorTemp, lux;
-  Serial.println("established uint16_ts");
   tcs2.getRawData(&red, &green, &blue, &clear);
-  Serial.println("got raw data for tcs2");
-  //  colorTemp = tcs2.calculateColorTemperature(red, green, blue);
-  //  Serial.println("calculated color temp");
   lux = tcs2.calculateLux(red, green, blue);
-  Serial.println("got lux for tcs2");
-
   if (target_color == 0) {
     drive();
     // Yellow
+    Serial.println(lux);
     if (lux > 2000) {
+      Serial.println("Got lux");
       //  when lux is above 3000, the sensor is on the tape
-      if ((red > blue) && (green > blue) && (red >= 4400) && (red <= 6000)) { //&& (colorTemp < 4000)) {
+      if ((red > blue) && (green > blue) && (red >= 5200) && (red <= 5500)) {
         // yellow tape
         setColor(0, 150, 255);
         target_color = YELLOW;
         Serial.println("Found Yellow!");
-      } else if ((red > 6000) && (blue > 7200) && (green > 8000)) {
+      } else if ((red > 6700) && (blue > 8100) && (green > 8700)) {
         // white tape
         Serial.println("Reversing!");
         // back up, wait, then rotate
@@ -168,17 +164,17 @@ void detect_quadrant_right() {
         rotate();
         delay(2000);
         return;
-      } else if ((green > red) && (green > blue) && (green >= 4300) && (green <= 6000)) {
+      } else if ((green > red) && (green > blue) && (green >= 4600) && (green <= 5100)) {
         // green tape
         setColor(255, 100, 255);
         target_color = GREEN;
         Serial.println("Found Green!");
-      } else if ((red > green) && (red > blue) && (red >= 2000) && (red < 3000)) {
+      } else if ((red > green) && (red > blue) && (red >= 1900) && (red < 2500)) {
         // red tape
         setColor(0, 255, 255);
         target_color = RED;
         Serial.println("Found Red!");
-      } else if ((blue > green) && (blue > red) && (green < red) && (blue > 4500) && (blue < 6000)) {
+      } else if ((blue > green) && (blue > red) && (green > red) && (blue > 5100) && (blue < 5600)) {
         // blue tape
         setColor(255, 255, 0);
         target_color = BLUE;
@@ -219,7 +215,7 @@ void border_right() {
   Serial.println("got lux");
 
 
-  if ((red > 6000) && (blue > 7200) && (green > 8000) && (lux > 2000)) {
+  if ((red > 6700) && (blue > 8100) && (green > 8700) && (lux > 2000)) {
     // white tape
     Serial.println("Reversing!");
     // back up, wait, then rotate
