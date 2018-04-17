@@ -4,7 +4,7 @@
 Our primary goal for this week was to get our sensors working properly. Our secondary goal was to continue designing a new body to accommodate the additional board for the servos, and possibly implement some block catching mechanism.
 
 ## New RGB Sensor Values
-Like last week, most of our time this week was spent troubleshooting issues with the additional RGB sensor. We were able to use the SoftI2C color detection code to collect values from both RGB sensors simultaneously, but we are no longer able to calculate color temp, which we previously used to help distinguish between border colors. However, we got around this by using just the red, green, and blue values to distinguish between tape colors, and the lux value to distinguish between mat and tape. One additional issue we ran into is that the RGB sensors get slightly different values, warranting separate left and right functions for detecting quadrant borders:
+Like last week, most of our time this week was spent troubleshooting issues with the additional RGB sensor. We were able to use the SoftI2C color detection code to collect values from both RGB sensors simultaneously, but we are no longer able to calculate color temp, which we previously used to help distinguish between border colors. We got around this by using just the red, green, and blue values to distinguish between tape colors, and the lux value to distinguish between mat and tape. One additional issue we ran into is that the RGB sensors get slightly different values, warranting separate left and right functions for detecting quadrant borders:
 
 ```c++
 void detect_quadrant_left() {
@@ -138,3 +138,21 @@ void border_right() {
   }
 }
 ```
+In the detect_quadrant methods, we use the red, green, and blue values to decide if the robot is on a quadrant border, and to print to the serial monitor when each color is found. In the border functions, we decide if the robot is on a white border, and if so, initiate a backup behavior. 
+
+## Next Steps
+Next week we would like to use these methods to detect the home quadrant, then work on our block finding and capturing mechanisms to continue completing milestones.
+
+## Pictures
+
+|![Front View](images/week8/IMG_7216.jpg "Front View")
+|:--:|
+| *Front View* |
+|![Top-down view](images/week8/IMG_7217.jpg "Top-down view")
+| *Top-down view* |
+|![Breadboard](images/week8/IMG_7219.jpg "Breadboard")
+| *Breadboard* |
+
+
+## Acknowledgments
+John, Frank, and Amy all worked on updating the code to be compatable with 2 RGB sensors, and getting new values for the quadrant and border detect methods.
