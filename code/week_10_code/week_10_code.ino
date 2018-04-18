@@ -7,7 +7,7 @@
 // #include <Adafruit_TCS34725.h> // RGB Color Sensor
 #include <Adafruit_TCS34725softi2c.h>
 
-
+Pixy pixy;
 
 //constant variable declarations
 const int SERVO_1 = 31;
@@ -26,14 +26,14 @@ const int GREEN = 3;
 const int RED = 4;
 
 
-int target_color = 1;
+int target_color = GREEN;
 
 //initialize two servo objects for the connected servos
 Servo servo_test_1;
 Servo servo_test_2;
 
 //initialize Pixy cam
-Pixy pixy;
+
 
 
 // You can use any digital pin for emulate SDA / SCL
@@ -51,6 +51,7 @@ void setup() {
   Serial.begin(9600);
   tcs1.begin();
   tcs2.begin();
+  pixy.init();
   servo_test_1.attach(SERVO_1); // attach the signal pin of servo to pin44 of arduino
   servo_test_2.attach(SERVO_2); // attach the signal pin of servo to pin45 of arduino
   // set each pin on the RGB LED to output
@@ -62,15 +63,14 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  stop();
-  detect_quadrant_left();
+  //stop();
+  //detect_quadrant_left();
   //Serial.println(target_color);
-  detect_quadrant_right();
+  //detect_quadrant_right();
   //Serial.println(target_color);
   //border_left();
   //border_right();
-  //  int front_sensor_val = analogRead(IR_FRONT);
-  //  sense_blocks(front_sensor_val);
+  sense_blocks();
 }
 
 void drive() {
@@ -252,36 +252,34 @@ void border_right() {
   }
 }
 
-void sense_blocks(int front_sensor_val) {
+void sense_blocks() {
   int num_blocks = pixy.getBlocks();
-  //Serial.println(num_blocks);
+  uint16_t clear, red, green, blue, lux;
+  tcs1.getRawData(&red, &green, &blue, &clear);
+  lux = tcs1.calculateLux(red, green, blue);
   for (int i = 0; i < num_blocks; i++) {
-    if (pixy.blocks[i].signature == target_color) {
-      while (pixy.blocks[0].signature != target_color) {
-        if (pixy.blocks[i].x < 130) {
-          servo_test_1.write(45);
-          servo_test_2.write(155);
-          delay(100);
-        }
-        else if ((pixy.blocks[i].x >= 130) && (pixy.blocks[i].x <= 160)) {
-          servo_test_1.write(45);
-          servo_test_2.write(135);
-          delay(100);
-        }
-        else if (pixy.blocks[i].x > 160) {
-          servo_test_1.write(25);
-          servo_test_2.write(135);
-          delay(100);
-        }
-        pixy.blocks[i].print();
+    if ((pixy.blocks[i].signature == target_color) & !((red > 9000) && (blue > 9000) && (green > 9000) && (lux > 3000))) {
+      Serial.println("Pixy sig == targer_color");
+      if (pixy.blocks[i].x < 130) {
+        servo_test_1.write(45);
+        servo_test_2.write(110);
+        delay(250);
       }
-      if (front_sensor_val >= BLOCK) {
-        signal_block();
+      else if ((pixy.blocks[i].x >= 130) && (pixy.blocks[i].x <= 160)) {
+        servo_test_1.write(45);
+        servo_test_2.write(135);
+        delay(250);
       }
+      else if (pixy.blocks[i].x > 160) {
+        servo_test_1.write(70);
+        servo_test_2.write(135);
+        delay(250);
+      }
+      pixy.blocks[i].print();
     }
     else {
-      rotate();
-      delay(500);
+      servo_test_1.write(90);
+      servo_test_2.write(90);
     }
   }
 }
