@@ -39,8 +39,6 @@ int target_color = 0;
 Servo servo_test_1;
 Servo servo_test_2;
 
-
-
 //Digital pins for emulating SDA / SCL
 #define SDApin1 34 // left sensor
 #define SCLpin1 36 // left sensor
