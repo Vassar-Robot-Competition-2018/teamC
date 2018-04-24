@@ -109,13 +109,23 @@ void sense_blocks() {
 This implementation of sense_blocks() needs a few changes before being considered complete. There is currently an issue involving the robot going out of bounds even though there is a condition in place to stop that from happening. Additionally, this method will need to work with our block-holding mechanism to not only move to the desired block, but also 'lasso' the block and drive it back to the home quadrant.
 
 ## A New Chassis
-...
+We decided that it would be optimal if our robot has a moving block-capturing mechanism because there were some cases in which the static mechanism would fail. Chiefly, our concern was when the robot went out of bounds with a block. Sure, our robot would remain in bounds, but the block would be lost, and that's one less block we could capture. So we opted to take a creative approach and use a lasso-like block mechanism to capture blocks. 
+
+The new body was built to be bigger and more robust than the previous one, and allows us to install the additional battery board if the need arises. It also allows us to place the PixyCam closer to the ground, which affords our robot the ability to sense blocks using the PixyCam without angling the camera downward, something our previous design did not allow. We were also able to better integrate the color sensors in a way that gives them a proper seat and insulates their wires better (which will be important in the head-to-head rounds). All in all, this new design allows us to both see and capture blocks better, and with its increased size, allows us to increase scalability.
 
 ## Next Steps
 For the upcoming week, our focus is on rewiring the Arduino and breadboard for the new chassis along with programming the sense_blocks() method to include block-moving functionality. Once completed, we will look to other milestones that have yet to be completed and find ways to implement a more formalized approach to traversing the playing field (based on which quadrant the robot is in) ahead of the competition.
 
 ## Pictures
-...
+|![Front View](images/week10/Front_View.JPG "Front View")
+|:--:|
+| *Front View* |
+|![Top-down view](images/week10/Top_View.JPG "Top-down view")
+| *Top-down view* |
+|![Side View](images/week10/Side_View.JPG "Side View")
+| *Side View* |
+|![Front Mechanism](images/week10/Front_Mechanism.JPG "Front_Mechanism")
+| *Front Mechanism* |
 
 ## Acknowledgments
 Amy and Frank worked on the programming-based objectives for the week. John designed and printed the chassis that we are currently using.
