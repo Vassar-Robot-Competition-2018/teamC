@@ -117,14 +117,14 @@ The new body was built to be bigger and more robust than the previous one, and a
 For the upcoming week, our focus is on rewiring the Arduino and breadboard for the new chassis along with programming the sense_blocks() method to include block-moving functionality. Once completed, we will look to other milestones that have yet to be completed and find ways to implement a more formalized approach to traversing the playing field (based on which quadrant the robot is in) ahead of the competition.
 
 ## Pictures
-|![Front View](images/week10/Front_View.jpg "Front View")
+|![Front View](images/week10/Front_View.JPG "Front View")
 |:--:|
 | *Front View* |
-|![Top-down view](images/week10/Top_View.jpg "Top-down view")
+|![Top-down view](images/week10/Top_View.JPG "Top-down view")
 | *Top-down view* |
-|![Side View](images/week10/Side_View.jpg "Side View")
+|![Side View](images/week10/Side_View.JPG "Side View")
 | *Side View* |
-|![Front Mechanism](images/week10/Front_Mechanism.jpg "Front_Mechanism")
+|![Front Mechanism](images/week10/Front_Mechanism.JPG "Front_Mechanism")
 | *Front Mechanism* |
 
 ## Acknowledgments
