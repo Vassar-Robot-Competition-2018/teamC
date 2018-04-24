@@ -1,10 +1,10 @@
-/*week_10_code_ino
- * Includes functionality for detecting quadrants with two RGB sensors
- * and sensing blocks using the Pixycam. We currently need to fix how
- * the sense_block() method uses RGB sensor values to avoid moving the
- * robot out of bounds. Block moving functionality is also next on the
- * feature list.
- */
+/*week_11_code_ino
+   Includes functionality for detecting quadrants with two RGB sensors
+   and sensing blocks using the Pixycam. We currently need to fix how
+   the sense_block() method uses RGB sensor values to avoid moving the
+   robot out of bounds. Block moving functionality is also next on the
+   feature list.
+*/
 
 #include <Servo.h> //Servo library
 #include <SPI.h> //SPI library - to communicate w/ SPI devices
@@ -18,18 +18,19 @@ Pixy pixy;
 //constant variable declarations
 const int SERVO_1 = 31; //left servo
 const int SERVO_2 = 12; //right servo
+const int SERVO_MICRO = 2; //'lasso' servo
 const int LED_PIN = 22; //LED for sense_blocks()
 const int IR_FRONT = A3;
 const int BLOCK = 170;
-const int GREEN_PIN = 5; // Green RGB LED pin
-const int BLUE_PIN = 6; // Blue RGB LED pin
-const int RED_PIN = 4; // Red RGB LED pin
+const int RED_PIN = 8; // Red RGB LED pin
+const int GREEN_PIN = 9; // Green RGB LED pin
+const int BLUE_PIN = 10; // Blue RGB LED pin
 
 //quadrant state values (same as Pixy signatures)
-const int BLUE = 1;
-const int YELLOW = 2;
-const int GREEN = 3;
-const int RED = 4;
+const int BLUE_Q = 1;
+const int YELLOW_Q = 2;
+const int GREEN_Q = 3;
+const int RED_Q = 4;
 
 //initial quadrant state set to 0
 int target_color = 0;
@@ -37,12 +38,15 @@ int target_color = 0;
 //initialize two servo objects for the connected servos
 Servo servo_test_1;
 Servo servo_test_2;
+Servo micro_serve;
 
 //Digital pins for emulating SDA / SCL
 #define SDApin1 34 // left sensor
 #define SCLpin1 36 // left sensor
 #define SDApin2 35 // right sensor
 #define SCLpin2 37 // right sensor
+
+#define COMMON_ANODE
 
 // Initialize the RGB sensors
 Adafruit_TCS34725softi2c tcs1 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X, SDApin1, SCLpin1);
@@ -57,21 +61,28 @@ void setup() {
   //attaching servos
   servo_test_1.attach(SERVO_1); // attach the signal pin of servo to pin44 of arduino
   servo_test_2.attach(SERVO_2); // attach the signal pin of servo to pin45 of arduino
+  micro_serve.attach(SERVO_MICRO);
   // set each pin on the RGB LED to output
   pinMode(BLUE_PIN, OUTPUT);
   pinMode(RED_PIN, OUTPUT);
   pinMode(GREEN_PIN, OUTPUT);
   //set LED to output
   pinMode(LED_PIN, OUTPUT);
+  setColor(0, 0, 0);
 }
 
 void loop() {
-  drive();
-  detect_quadrant_left();
-  detect_quadrant_right();
-  //border_left();
-  //border_right();
-  sense_blocks();
+  //drive();
+  //  detect_quadrant_left();
+  //  delay(1000);
+  //  detect_quadrant_right();
+  //  //border_left();
+  //  //border_right();
+  //  int front_sensor_val = analogRead(IR_FRONT);
+  //  sense_blocks(front_sensor_val);
+  int front_sensor_val = analogRead(IR_FRONT);
+  get_sensor_value(front_sensor_val);
+
 }
 
 void drive() {
@@ -99,15 +110,15 @@ void detect_quadrant_left() {
   lux = tcs1.calculateLux(red, green, blue);
   //until robot reaches tape, drive
   if (target_color == 0) {
-    drive();
+    //drive();
     //when lux is above 2000, the sensor is on the tape
     if (lux > 2000) {
       //yellow tape conditions
       if ((red > blue) && (green > blue) && ((red - blue) > 1000)) {
         //set the RGB LED to yellow
-        setColor(0, 150, 255);
+        setColor(255, 50, 0);
         //change state to yellow
-        target_color = YELLOW;
+        target_color = YELLOW_Q;
       }
       //white tape conditions
       else if ((red > 9000) && (blue > 9000) && (green > 9000)) {
@@ -121,23 +132,23 @@ void detect_quadrant_left() {
       //green tape conditions
       else if ((green > red) && (green > blue)) {
         //set the RGB LED to green
-        setColor(255, 100, 255);
+        setColor(0, 255, 0);
         //change state to green
-        target_color = GREEN;
+        target_color = GREEN_Q;
       }
       //red tape conditons
       else if ((red > green) && (red > blue)) {
         //set the RGB LED to red
-        setColor(0, 255, 255);
+        setColor(255, 0, 0);
         //change state to red
-        target_color = RED;
+        target_color = RED_Q;
       }
       //blue tape conditions
       else if ((blue > green) && (blue > red)) {
         //set the RGB LED to blue
-        setColor(255, 255, 0);
+        setColor(0, 0, 255);
         //change state to blue
-        target_color = BLUE;
+        target_color = BLUE_Q;
       }
     }
   }
@@ -156,9 +167,9 @@ void detect_quadrant_right() {
       //yellow tape conditions
       if ((red > blue) && (green > blue) && ((red - blue) >= 1000)) {
         //set the RGB LED to yellow
-        setColor(0, 150, 255);
+        setColor(255, 50, 0);
         //change state to yellow
-        target_color = YELLOW;
+        target_color = YELLOW_Q;
       }
       //white tape conditions
       else if ((red > 9000) && (blue > 9000) && (green > 9000)) {
@@ -172,23 +183,23 @@ void detect_quadrant_right() {
       //green tape conditions
       else if ((green > red) && (green > blue)) {
         //set the RGB LED to green
-        setColor(255, 100, 255);
+        setColor(0, 0, 255);
         //change state to green
-        target_color = GREEN;
+        target_color = GREEN_Q;
       }
       //red tape conditions
       else if ((red > green) && (red > blue)) {
         //set the RGB LED to red
-        setColor(0, 255, 255);
+        setColor(255, 0, 0);
         //change state to red
-        target_color = RED;
+        target_color = RED_Q;
       }
       //blue tape conditions
       else if ((blue > green) && (blue > red)) {
         //set the RGB LED to blue
-        setColor(255, 255, 0);
+        setColor(0, 0, 255);
         //change state to blue
-        target_color = BLUE;
+        target_color = BLUE_Q;
       }
     }
   }
@@ -228,7 +239,7 @@ void border_right() {
   }
 }
 
-void sense_blocks() {
+void sense_blocks(int front_sensor_val) {
   //intialize variable to store number of objects Pixycam sees
   int num_blocks = pixy.getBlocks();
   //get left RGB sensor values (temporary)
@@ -240,6 +251,7 @@ void sense_blocks() {
   */
   for (int i = 0; i < num_blocks; i++) {
     if ((pixy.blocks[i].signature == target_color) & !((red > 9000) && (blue > 9000) && (green > 9000) && (lux > 3000))) {
+      Serial.println("Found a block/Not on white tape");
       //signal that a block matching target color was found
       signal_block();
       //if object is to the left, turn left
@@ -269,6 +281,17 @@ void sense_blocks() {
   }
 }
 
+void drop_lasso() {
+  micro_serve.write(0);
+}
+
+void lift_lasso() {
+  micro_serve.write(90);
+}
+
+void get_sensor_value(int front_sensor_val) {
+  Serial.println(front_sensor_val);
+}
 void signal_block() {
   digitalWrite(LED_PIN, HIGH);
 }
