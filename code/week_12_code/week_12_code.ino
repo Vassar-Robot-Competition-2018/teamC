@@ -33,7 +33,7 @@ const int GREEN_Q = 3;
 const int RED_Q = 4;
 
 //initial quadrant state set to 0
-int target_color = 0;
+int target_color = 4;
 int current_color = 0;
 
 // set to true when the robot has a block in its possession
@@ -78,22 +78,23 @@ void setup() {
 
 void loop() {
   drive();
-  detect_quadrant_left();
+  //detect_quadrant_left();
   //detect_quadrant_right();
-//  if ((detect_quadrant_left() > 0) && (detect_quadrant_right() == 0)) {
-//    straighten_left();
-//    delay(1000);
-//  }
-//  else if ((detect_quadrant_left() == 0) && (detect_quadrant_right() > 0)) {
-//    straighten_right();
-//    delay(1000);
-//  }
-//
-//
-//  border_left();
-//  border_right();
-//  int front_sensor_val = analogRead(IR_FRONT);
-//  sense_blocks(front_sensor_val);
+  //  if ((detect_quadrant_left() > 0) && (detect_quadrant_right() == 0)) {
+  //    straighten_left();
+  //    delay(1000);
+  //  }
+  //  else if ((detect_quadrant_left() == 0) && (detect_quadrant_right() > 0)) {
+  //    straighten_right();
+  //    delay(1000);
+  //  }
+  //
+  //
+  //  border_left();
+  //  border_right();
+  int front_sensor_val = analogRead(IR_FRONT);
+  sense_blocks(front_sensor_val);
+  //get_sensor_value(front_sensor_val);
 
 }
 
@@ -127,14 +128,14 @@ int detect_quadrant_left() {
   lux = tcs1.calculateLux(red, green, blue);
   //until robot reaches tape, drive
   //when lux is above 2000, the sensor is on the tape
-  Serial.println("red");
-  Serial.println(red);
-  Serial.println("blue");
-  Serial.println(blue);
-  Serial.println("green");
-  Serial.println(green);
+  //  Serial.println("red");
+  //  Serial.println(red);
+  //  Serial.println("blue");
+  //  Serial.println(blue);
+  //  Serial.println("green");
+  //  Serial.println(green);
   if (lux > 2000) {
-    Serial.println("LUX > 2000");
+    //Serial.println("LUX > 2000");
     //yellow tape conditions
     if ((red > blue) && (green > blue) && ((red - blue) > 1000)) {
       //set the RGB LED to yellow
@@ -142,8 +143,12 @@ int detect_quadrant_left() {
       //change state to yellow
       if (target_color == 0) {
         target_color = YELLOW_Q;
+        Serial.println("Target color");
+        Serial.println(target_color);
       }
       current_color = YELLOW_Q;
+      Serial.println("Current color");
+      Serial.println(current_color);
       return current_color;
     }
     //white tape conditions
@@ -162,8 +167,12 @@ int detect_quadrant_left() {
       //change state to green
       if (target_color == 0) {
         target_color = GREEN_Q;
+        Serial.println("Target color");
+        Serial.println(target_color);
       }
       current_color = GREEN_Q;
+      Serial.println("Current color");
+      Serial.println(current_color);
       return current_color;
     }
     //red tape conditions
@@ -173,8 +182,12 @@ int detect_quadrant_left() {
       //change state to red
       if (target_color == 0) {
         target_color = RED_Q;
+        Serial.println("Target color");
+        Serial.println(target_color);
       }
       current_color = RED_Q;
+      Serial.println("Current color");
+      Serial.println(current_color);
       return current_color;
     }
     //blue tape conditions
@@ -184,12 +197,17 @@ int detect_quadrant_left() {
       //change state to blue
       if (target_color == 0) {
         target_color = BLUE_Q;
+        Serial.println("Target color");
+        Serial.println(target_color);
       }
-      current_color = BLUE_Q;
-      return current_color;
     }
+    current_color = BLUE_Q;
+    Serial.println("Current color");
+    Serial.println(current_color);
+    return current_color;
   }
 }
+
 int detect_quadrant_right() {
   //getting values from left RGB sensor
   uint16_t clear, red, green, blue, colorTemp, lux;
@@ -197,8 +215,14 @@ int detect_quadrant_right() {
   lux = tcs2.calculateLux(red, green, blue);
   //until robot reaches tape, drive
   //when lux is above 2000, the sensor is on the tape
+  //  Serial.println("red");
+  //  Serial.println(red);
+  //  Serial.println("blue");
+  //  Serial.println(blue);
+  //  Serial.println("green");
+  //  Serial.println(green);
   if (lux > 2000) {
-    Serial.println("LUX > 2000");
+    //Serial.println("LUX > 2000");
     //yellow tape conditions
     if ((red > blue) && (green > blue) && ((red - blue) > 1000)) {
       //set the RGB LED to yellow
@@ -206,8 +230,12 @@ int detect_quadrant_right() {
       //change state to yellow
       if (target_color == 0) {
         target_color = YELLOW_Q;
+        Serial.println("Target color");
+        Serial.println(target_color);
       }
       current_color = YELLOW_Q;
+      Serial.println("Current color");
+      Serial.println(current_color);
       return current_color;
     }
     //white tape conditions
@@ -226,8 +254,12 @@ int detect_quadrant_right() {
       //change state to green
       if (target_color == 0) {
         target_color = GREEN_Q;
+        Serial.println("Target color");
+        Serial.println(target_color);
       }
       current_color = GREEN_Q;
+      Serial.println("Current color");
+      Serial.println(current_color);
       return current_color;
     }
     //red tape conditions
@@ -237,8 +269,12 @@ int detect_quadrant_right() {
       //change state to red
       if (target_color == 0) {
         target_color = RED_Q;
+        Serial.println("Target color");
+        Serial.println(target_color);
       }
       current_color = RED_Q;
+      Serial.println("Current color");
+      Serial.println(current_color);
       return current_color;
     }
     //blue tape conditions
@@ -248,10 +284,14 @@ int detect_quadrant_right() {
       //change state to blue
       if (target_color == 0) {
         target_color = BLUE_Q;
+        Serial.println("Target color");
+        Serial.println(target_color);
       }
-      current_color = BLUE_Q;
-      return current_color;
     }
+    current_color = BLUE_Q;
+    Serial.println("Current color");
+    Serial.println(current_color);
+    return current_color;
   }
 }
 
@@ -302,7 +342,7 @@ void sense_blocks(int front_sensor_val) {
   */
   while (front_sensor_val > BLOCK) {
     for (int i = 0; i < num_blocks; i++) {
-      if ((pixy.blocks[i].signature == target_color) && !((red > 9000) || (blue > 9000) || (green > 9000) || (lux > 3000))) {
+      if ((pixy.blocks[i].signature == target_color)) { //&& !((red > 9000) || (blue > 9000) || (green > 9000) || (lux > 3000))) {
         Serial.println("Found a block/Not on white tape");
         //signal that a block matching target color was found
         signal_block();
@@ -334,7 +374,7 @@ void sense_blocks(int front_sensor_val) {
   }
   has_block = true;
   drop_lasso();
-  drive_home();
+  //drive_home();
 }
 
 void drop_lasso() {
