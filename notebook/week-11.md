@@ -1,4 +1,4 @@
-# Week 10
+# Week 11
 ## Goals
 For this week, our objectives were the following:
 * Find a way for the robot to use the left and right RGB sensors to enter a quadrant perpendicular to the border.
