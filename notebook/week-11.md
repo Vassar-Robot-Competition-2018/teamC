@@ -97,7 +97,7 @@ For the upcoming week, our focus is on continuing to get all of our code working
 | *Front View* |
 |![Top-down view](images/week11/IMG_7262.JPG "Top-down view")
 | *Top-down view* |
-|![Side View](images/week10/IMG_7259.JPG "Side View")
+|![Side View](images/week11/IMG_7259.JPG "Side View")
 | *Side View* |
 
 
