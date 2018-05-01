@@ -28,7 +28,6 @@ void straighten_right() {
 ```
 In each of these functions, once the respective RGB sensor detects a quadrant border, the servo on that side is stopped, while the servo on the opposite side continues driving. After the delay, the robot is positioned to enter the quadrant at 90 degrees. One issue with this method is that the amount of time the robot needs to rotate depends on the angle at which it approaches the border. This means delaying for a static amount of time will only work for a small subset of approach angles. Moving forward we may edit this function to rotate until both RGB sensors detect the border of interest, allowing it to work for any angle. 
 
-## Printing a new loop
 
 ## Using the loop
 The new loop was put into action this week by creating 2 new functions drop_lasso() and lift_lasso():
@@ -93,15 +92,14 @@ In this loop, everything is commented out except the drive and sense_blocks func
 For the upcoming week, our focus is on continuing to get all of our code working together consistently, and to fine tune our block catching mechanism to work consistently. 
 
 ## Pictures
-|![Front View](images/week10/Front_View.JPG "Front View")
+|![Front View](images/week11/IMG_7261.JPG "Front View")
 |:--:|
 | *Front View* |
-|![Top-down view](images/week10/Top_View.JPG "Top-down view")
+|![Top-down view](images/week11/IMG_7262.JPG "Top-down view")
 | *Top-down view* |
-|![Side View](images/week10/Side_View.JPG "Side View")
+|![Side View](images/week10/IMG_7259.JPG "Side View")
 | *Side View* |
-|![Front Mechanism](images/week10/Front_Mechanism.JPG "Front_Mechanism")
-| *Front Mechanism* |
+
 
 ## Acknowledgments
 Amy and Frank worked on the programming-based objectives for the week. John designed and printed the loop that we are currently using.
