@@ -67,23 +67,19 @@ void setup()
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+  drive();
   detect_quadrant_left();
   detect_quadrant_right();
 
-  while (detect_quadrant_left() != detect_quadrant_right()) {
-    if ((detect_quadrant_left() > 0) && (detect_quadrant_right() == 0)) {
-      servo_test_1.write(90);
-      servo_test_2.write(135);
-    }
-    else if ((detect_quadrant_left() == 0) && (detect_quadrant_right() > 0)) {
-      servo_test_1.write(45);
-      servo_test_2.write(90);
-    }
+  if ((detect_quadrant_left() > 0) && (detect_quadrant_right() == 0)) {
+    straighten_left();
+  }
+  else if ((detect_quadrant_left() == 0) && (detect_quadrant_right() > 0)) {
+    straighten_right();
   }
 
-  //int front_sensor_val = analogRead(IR_FRONT);
-  //sense_blocks(front_sensor_val);
+  int front_sensor_val = analogRead(IR_FRONT);
+  sense_blocks(front_sensor_val);
 
 
 }
@@ -92,8 +88,8 @@ void loop() {
 void drive() {
   // drive in a "straight" line
   //Serial.println("Driving!!!!!!!!!!!!!!!!!!!!");
-  servo_test_1.write(45);
-  servo_test_2.write(135);
+  servo_test_1.write(50);
+  servo_test_2.write(134);
 }
 
 
@@ -110,23 +106,18 @@ int detect_quadrant_left() {
   //  Serial.println(blue);
   //  Serial.println("green");
   //  Serial.println(green);
-  servo_test_1.write(45);
-  servo_test_2.write(135);
-  if (lux > 2000) {
+  if (lux > 3000) {
     //Serial.println("LUX > 2000");
     //yellow tape conditions
     if ((red > blue) && (green > blue) && ((red - blue) > 1000)) {
       //set the RGB LED to yellow
-      setColor(255, 50, 0);
+      
       //change state to yellow
       if (target_color == 0) {
         target_color = YELLOW_Q;
-        Serial.println("Target color");
-        Serial.println(target_color);
+        setColor(0, 255, 0);
       }
       current_color = YELLOW_Q;
-      Serial.println("Current color");
-      Serial.println(current_color);
       return current_color;
     }
     //white tape conditions
@@ -136,7 +127,7 @@ int detect_quadrant_left() {
       delay(1000);
       rotate();
       delay(1000);
-      return;
+      return 0;
     }
     //green tape conditions
     else if ((green > red) && (green > blue)) {
@@ -145,12 +136,8 @@ int detect_quadrant_left() {
       //change state to green
       if (target_color == 0) {
         target_color = GREEN_Q;
-        Serial.println("Target color");
-        Serial.println(target_color);
       }
       current_color = GREEN_Q;
-      Serial.println("Current color");
-      Serial.println(current_color);
       return current_color;
     }
     //red tape conditions
@@ -160,12 +147,8 @@ int detect_quadrant_left() {
       //change state to red
       if (target_color == 0) {
         target_color = RED_Q;
-        Serial.println("Target color");
-        Serial.println(target_color);
       }
       current_color = RED_Q;
-      Serial.println("Current color");
-      Serial.println(current_color);
       return current_color;
     }
     //blue tape conditions
@@ -175,19 +158,17 @@ int detect_quadrant_left() {
       //change state to blue
       if (target_color == 0) {
         target_color = BLUE_Q;
-        Serial.println("Target color");
-        Serial.println(target_color);
       }
     }
-    current_color = BLUE_Q;
-    Serial.println("Current color");
-    Serial.println(current_color);
-    return current_color;
+    else {
+      return 0;
+    }
   }
   else {
     return 0;
   }
 }
+
 
 int detect_quadrant_right() {
   //getting values from left RGB sensor
@@ -202,9 +183,7 @@ int detect_quadrant_right() {
   //  Serial.println(blue);
   //  Serial.println("green");
   //  Serial.println(green);
-  servo_test_1.write(45);
-  servo_test_2.write(135);
-  if (lux > 2000) {
+  if (lux > 3000) {
     //Serial.println("LUX > 2000");
     //yellow tape conditions
     if ((red > blue) && (green > blue) && ((red - blue) > 1000)) {
@@ -213,12 +192,8 @@ int detect_quadrant_right() {
       //change state to yellow
       if (target_color == 0) {
         target_color = YELLOW_Q;
-        Serial.println("Target color");
-        Serial.println(target_color);
       }
       current_color = YELLOW_Q;
-      Serial.println("Current color");
-      Serial.println(current_color);
       return current_color;
     }
     //white tape conditions
@@ -228,7 +203,7 @@ int detect_quadrant_right() {
       delay(1000);
       rotate();
       delay(1000);
-      return;
+      return 0;
     }
     //green tape conditions
     else if ((green > red) && (green > blue)) {
@@ -237,12 +212,8 @@ int detect_quadrant_right() {
       //change state to green
       if (target_color == 0) {
         target_color = GREEN_Q;
-        Serial.println("Target color");
-        Serial.println(target_color);
       }
       current_color = GREEN_Q;
-      Serial.println("Current color");
-      Serial.println(current_color);
       return current_color;
     }
     //red tape conditions
@@ -252,12 +223,8 @@ int detect_quadrant_right() {
       //change state to red
       if (target_color == 0) {
         target_color = RED_Q;
-        Serial.println("Target color");
-        Serial.println(target_color);
       }
       current_color = RED_Q;
-      Serial.println("Current color");
-      Serial.println(current_color);
       return current_color;
     }
     //blue tape conditions
@@ -267,14 +234,11 @@ int detect_quadrant_right() {
       //change state to blue
       if (target_color == 0) {
         target_color = BLUE_Q;
-        Serial.println("Target color");
-        Serial.println(target_color);
       }
     }
-    current_color = BLUE_Q;
-    Serial.println("Current color");
-    Serial.println(current_color);
-    return current_color;
+    else {
+      return 0;
+    }
   }
   else {
     return 0;
@@ -368,32 +332,32 @@ void sense_blocks(int front_sensor_val) {
       //signal_block();
       //if object is to the left, turn left
       if (pixy.blocks[i].x < 130) {
-        servo_test_1.write(70);
-        servo_test_2.write(135);
-        delay(150);
+        servo_test_1.write(45);
+        servo_test_2.write(110);
+        delay(50);
       }
       //if object is in central view, drive straight
       else if ((pixy.blocks[i].x >= 130) && (pixy.blocks[i].x <= 160)) {
         servo_test_1.write(45);
         servo_test_2.write(135);
-        delay(150);
+        delay(50);
       }
       //if object is to the right, turn right
       else if (pixy.blocks[i].x > 160) {
-        servo_test_1.write(45);
-        servo_test_2.write(110);
-        delay(150);
+        servo_test_1.write(70);
+        servo_test_2.write(135);
+        delay(50);
       }
     }
     //if there are no blocks matching the target color, stop (temporary)
   }
 
-  //  if (front_sensor_val < BLOCK) {
-  //    has_block = true;
-  //    //drop_lasso();
-  //
-  //    //drive_home();
-  //  }
+    if (front_sensor_val < BLOCK) {
+      has_block = true;
+      drop_lasso();
+  
+      //drive_home();
+    }
 }
 
 void drop_lasso() {
@@ -401,7 +365,7 @@ void drop_lasso() {
     servo_test_1.write(135);
     servo_test_2.write(45);
     delay(100);
-    micro_serve.write(1);
+    micro_serve.write(0);
     delay(100);
 
   }
@@ -435,6 +399,24 @@ void rotate() {
 void kill_servos() {
   servo_test_1.write(90);
   servo_test_2.write(90);
+}
+
+void straighten_left() {
+  while ((detect_quadrant_left() != detect_quadrant_right())) {
+    Serial.println("Straighten left");
+    servo_test_1.write(135);
+    servo_test_2.write(110);
+  }
+  drive();
+}
+
+void straighten_right() {
+  while (detect_quadrant_left() != detect_quadrant_right()) {
+    Serial.println("Straighten right");
+    servo_test_1.write(80);
+    servo_test_2.write(45);
+  }
+  drive();
 }
 
 
