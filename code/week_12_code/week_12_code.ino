@@ -33,7 +33,7 @@ const int GREEN_Q = 3;
 const int RED_Q = 4;
 
 //initial quadrant state set to 0
-int target_color = 4;
+int target_color = 0;
 int current_color = 0;
 
 // set to true when the robot has a block in its possession
@@ -77,9 +77,9 @@ void setup() {
 }
 
 void loop() {
-  drive();
-  //detect_quadrant_left();
-  //detect_quadrant_right();
+  //drive();
+  detect_quadrant_left();
+  detect_quadrant_right();
   //  if ((detect_quadrant_left() > 0) && (detect_quadrant_right() == 0)) {
   //    straighten_left();
   //    delay(1000);
@@ -100,6 +100,7 @@ void loop() {
 
 void drive() {
   // drive in a "straight" line
+  Serial.println("Driving!!!!!!!!!!!!!!!!!!!!");
   servo_test_1.write(45);
   servo_test_2.write(135);
 }
@@ -152,7 +153,7 @@ int detect_quadrant_left() {
       return current_color;
     }
     //white tape conditions
-    else if ((red > 9000) && (blue > 9000) && (green > 9000)) {
+    else if ((red > 6000) && (blue > 8000) && (green > 9000)) {
       // back up, wait, then rotate
       reverse();
       delay(1000);
@@ -239,7 +240,7 @@ int detect_quadrant_right() {
       return current_color;
     }
     //white tape conditions
-    else if ((red > 9000) && (blue > 9000) && (green > 9000)) {
+    else if ((red > 6000) && (blue > 8000) && (green > 9000)) {
       // back up, wait, then rotate
       reverse();
       delay(1000);
@@ -334,9 +335,9 @@ void sense_blocks(int front_sensor_val) {
   //initialize variable to store number of objects Pixycam sees
   int num_blocks = pixy.getBlocks();
   //get left RGB sensor values (temporary)
-  uint16_t clear, red, green, blue, lux;
-  tcs1.getRawData(&red, &green, &blue, &clear);
-  lux = tcs1.calculateLux(red, green, blue);
+  //uint16_t clear, red, green, blue, lux;
+  //tcs1.getRawData(&red, &green, &blue, &clear);
+  //lux = tcs1.calculateLux(red, green, blue);
   /*check each object detected by pixycam to see if it
      matches thae target color (and robot is not out of bounds)
   */
@@ -364,11 +365,14 @@ void sense_blocks(int front_sensor_val) {
           servo_test_2.write(135);
           delay(250);
         }
-      }
-      //if there are no blocks matching the target color, stop (temporary)
-      else {
-        border_left();
-        border_right();
+        else {
+          //        border_left();
+          //        border_right();
+          rotate();
+        }
+        //if there are no blocks matching the target color, stop (temporary)
+       break;
+
       }
     }
   }
