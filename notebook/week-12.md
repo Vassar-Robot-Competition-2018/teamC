@@ -205,7 +205,7 @@ We want our robot to enter each quadrant as straight as possible in order to mak
   else if ((detect_quadrant_left() == 0) && (detect_quadrant_right() > 0)) {
     straighten_right();
   }
-```c++
+```
  
 If we are entering a quadrant at an angle, the robot will correct itself to get both RGB sensors on the same surface, effectively straightening the robot.
 
