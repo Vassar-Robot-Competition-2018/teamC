@@ -8,7 +8,7 @@
 // This is the main Pixy object
 Pixy pixy;
 //constant variable declarations
-const int SERVO_1 = 31;
+const int SERVO_1 = 13;
 const int SERVO_2 = 12;
 const int SERVO_MICRO = 2;
 const int BLOCK = 500;
@@ -44,8 +44,8 @@ const int RED_Q = 4;
 
 boolean has_block = false;
 // Initialize the RGB sensors
-Adafruit_TCS34725softi2c tcs1 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X, SDApin1, SCLpin1);
-Adafruit_TCS34725softi2c tcs2 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X, SDApin2, SCLpin2);
+Adafruit_TCS34725softi2c tcs1 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_2_4MS, TCS34725_GAIN_4X, SDApin1, SCLpin1);
+Adafruit_TCS34725softi2c tcs2 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_2_4MS, TCS34725_GAIN_4X, SDApin2, SCLpin2);
 void setup()
 {
   Serial.begin(9600);
@@ -106,22 +106,22 @@ int detect_quadrant_left() {
   //  Serial.println(blue);
   //  Serial.println("green");
   //  Serial.println(green);
-  if (lux > 3000) {
+  if (lux > 150) {
     //Serial.println("LUX > 2000");
     //yellow tape conditions
-    if ((red > blue) && (green > blue) && ((red - blue) > 1000)) {
+    if ((red > blue) && (green > blue) && ((red - blue) > 100)) {
       //set the RGB LED to yellow
-      
+      Serial.println("yellow");
       //change state to yellow
       if (target_color == 0) {
         target_color = YELLOW_Q;
-        setColor(0, 255, 0);
+        setColor(255, 150, 0);
       }
       current_color = YELLOW_Q;
       return current_color;
     }
     //white tape conditions
-    else if ((red > 6000) && (blue > 8000) && (green > 9000)) {
+    else if ((red > 350) && (blue > 400) && (green > 450)) {
       // back up, wait, then rotate
       reverse();
       delay(1000);
@@ -132,10 +132,11 @@ int detect_quadrant_left() {
     //green tape conditions
     else if ((green > red) && (green > blue)) {
       //set the RGB LED to green
-      setColor(0, 255, 0);
+      Serial.println("green");
       //change state to green
       if (target_color == 0) {
         target_color = GREEN_Q;
+        setColor(0, 255, 0);
       }
       current_color = GREEN_Q;
       return current_color;
@@ -143,10 +144,11 @@ int detect_quadrant_left() {
     //red tape conditions
     else if ((red > green) && (red > blue)) {
       //set the RGB LED to red
-      setColor(255, 0, 0);
+      
       //change state to red
       if (target_color == 0) {
         target_color = RED_Q;
+        setColor(255, 0, 0);
       }
       current_color = RED_Q;
       return current_color;
@@ -154,10 +156,11 @@ int detect_quadrant_left() {
     //blue tape conditions
     else if ((blue > green) && (blue > red)) {
       //set the RGB LED to blue
-      setColor(0, 0, 255);
+      
       //change state to blue
       if (target_color == 0) {
         target_color = BLUE_Q;
+        setColor(0, 0, 255);
       }
     }
     else {
@@ -183,21 +186,23 @@ int detect_quadrant_right() {
   //  Serial.println(blue);
   //  Serial.println("green");
   //  Serial.println(green);
-  if (lux > 3000) {
+  if (lux > 150) {
     //Serial.println("LUX > 2000");
     //yellow tape conditions
-    if ((red > blue) && (green > blue) && ((red - blue) > 1000)) {
+    if ((red > blue) && (green > blue) && ((red - blue) > 100)) {
+      Serial.println("Yellow!");
       //set the RGB LED to yellow
-      setColor(255, 50, 0);
+      
       //change state to yellow
       if (target_color == 0) {
         target_color = YELLOW_Q;
+        setColor(255, 150, 0);
       }
       current_color = YELLOW_Q;
       return current_color;
     }
     //white tape conditions
-    else if ((red > 6000) && (blue > 8000) && (green > 9000)) {
+    else if ((red > 500) && (blue > 550) && (green > 600)) {
       // back up, wait, then rotate
       reverse();
       delay(1000);
@@ -208,10 +213,12 @@ int detect_quadrant_right() {
     //green tape conditions
     else if ((green > red) && (green > blue)) {
       //set the RGB LED to green
-      setColor(0, 255, 0);
+      Serial.println("Green");
+      
       //change state to green
       if (target_color == 0) {
         target_color = GREEN_Q;
+        setColor(0, 255, 0);
       }
       current_color = GREEN_Q;
       return current_color;
@@ -219,10 +226,11 @@ int detect_quadrant_right() {
     //red tape conditions
     else if ((red > green) && (red > blue)) {
       //set the RGB LED to red
-      setColor(255, 0, 0);
+      
       //change state to red
       if (target_color == 0) {
         target_color = RED_Q;
+        setColor(255, 0, 0);
       }
       current_color = RED_Q;
       return current_color;
@@ -230,10 +238,11 @@ int detect_quadrant_right() {
     //blue tape conditions
     else if ((blue > green) && (blue > red)) {
       //set the RGB LED to blue
-      setColor(0, 0, 255);
+      
       //change state to blue
       if (target_color == 0) {
         target_color = BLUE_Q;
+        setColor(0, 0, 255);
       }
     }
     else {
@@ -332,8 +341,8 @@ void sense_blocks(int front_sensor_val) {
       //signal_block();
       //if object is to the left, turn left
       if (pixy.blocks[i].x < 130) {
-        servo_test_1.write(45);
-        servo_test_2.write(110);
+        servo_test_1.write(80);
+        servo_test_2.write(135);
         delay(50);
       }
       //if object is in central view, drive straight
@@ -344,8 +353,8 @@ void sense_blocks(int front_sensor_val) {
       }
       //if object is to the right, turn right
       else if (pixy.blocks[i].x > 160) {
-        servo_test_1.write(70);
-        servo_test_2.write(135);
+        servo_test_1.write(45);
+        servo_test_2.write(100);
         delay(50);
       }
     }
