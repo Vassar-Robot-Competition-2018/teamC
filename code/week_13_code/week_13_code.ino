@@ -1,3 +1,6 @@
+#include <SoftwareWire.h>
+
+
 /*week_13_code_ino
    Now with block moving functionality!
 */
@@ -22,10 +25,18 @@ int target_color = 0;
 int current_color = 0;
 int last_color = 0;
 
-const int RED_PIN = 8; // Red RGB LED pin
+const int RED_PIN = 8; // Red RGB LED pin for target color
 const int GREEN_PIN = 9; // Green RGB LED pin
 const int BLUE_PIN = 10; // Blue RGB LED pin
-const int LED_PIN = 22; //LED for sense_blocks()
+
+const int RED_PIN_C = 5; // RGB LED pins for current color
+const int GREEN_PIN_C = 6;
+const int BLUE_PIN_C = 7;
+
+const int RED_PIN_L = 2; // RGB LED pins for last color
+const int GREEN_PIN_L = 3;
+const int BLUE_PIN_L = 4;
+
 
 Servo servo_test_1;
 Servo servo_test_2;
@@ -64,9 +75,12 @@ void setup()
   pinMode(BLUE_PIN, OUTPUT);
   pinMode(RED_PIN, OUTPUT);
   pinMode(GREEN_PIN, OUTPUT);
-  //set LED to output
-  pinMode(LED_PIN, OUTPUT);
-  setColor(0, 0, 0);
+  pinMode(BLUE_PIN_C, OUTPUT);
+  pinMode(RED_PIN_C, OUTPUT);
+  pinMode(GREEN_PIN_C, OUTPUT);
+  pinMode(BLUE_PIN_L, OUTPUT);
+  pinMode(RED_PIN_L, OUTPUT);
+  pinMode(GREEN_PIN_L, OUTPUT);
 }
 
 void loop() {
@@ -117,6 +131,16 @@ int detect_quadrant_left() {
       }
       last_color = current_color;
       current_color = YELLOW_Q;
+      setcolor_c(255, 150, 0);
+      if (last_color == 1){
+        setcolor_l(0,0,255);
+      } else if (last_color == 2) {
+        setcolor_l(255, 150, 0);
+      } else if (last_color == 3) {
+        setcolor_l(0, 255, 0);
+      } else if (last_color == 4) {
+        setcolor_l(255, 0, 0);
+      }
       return current_color;
     }
     //white tape conditions
@@ -139,6 +163,16 @@ int detect_quadrant_left() {
       }
       last_color = current_color;
       current_color = GREEN_Q;
+      setcolor_c(0, 255, 0);
+      if (last_color == 1){
+        setcolor_l(0,0,255);
+      } else if (last_color == 2) {
+        setcolor_l(255, 150, 0);
+      } else if (last_color == 3) {
+        setcolor_l(0, 255, 0);
+      } else if (last_color == 4) {
+        setcolor_l(255, 0, 0);
+      }
       return current_color;
     }
     //red tape conditions
@@ -152,6 +186,16 @@ int detect_quadrant_left() {
       }
       last_color = current_color;
       current_color = RED_Q;
+      setcolor_c(255, 0, 0);
+      if (last_color == 1){
+        setcolor_l(0,0,255);
+      } else if (last_color == 2) {
+        setcolor_l(255, 150, 0);
+      } else if (last_color == 3) {
+        setcolor_l(0, 255, 0);
+      } else if (last_color == 4) {
+        setcolor_l(255, 0, 0);
+      }
       return current_color;
     }
     //blue tape conditions
@@ -165,6 +209,16 @@ int detect_quadrant_left() {
       }
       last_color = current_color;
       current_color = BLUE_Q;
+      setcolor_c(0, 0, 255);
+      if (last_color == 1){
+        setcolor_l(0,0,255);
+      } else if (last_color == 2) {
+        setcolor_l(255, 150, 0);
+      } else if (last_color == 3) {
+        setcolor_l(0, 255, 0);
+      } else if (last_color == 4) {
+        setcolor_l(255, 0, 0);
+      }
       return current_color;
     }
     else {
@@ -203,6 +257,16 @@ int detect_quadrant_right() {
       }
       last_color = current_color;
       current_color = YELLOW_Q;
+      setcolor_c(225, 150, 0);
+      if (last_color == 1){
+        setcolor_l(0,0,255);
+      } else if (last_color == 2) {
+        setcolor_l(255, 150, 0);
+      } else if (last_color == 3) {
+        setcolor_l(0, 255, 0);
+      } else if (last_color == 4) {
+        setcolor_l(255, 0, 0);
+      }
       return current_color;
     }
     //white tape conditions
@@ -225,6 +289,16 @@ int detect_quadrant_right() {
       }
       last_color = current_color;
       current_color = GREEN_Q;
+      setcolor_c(0, 255, 0);
+      if (last_color == 1){
+        setcolor_l(0,0,255);
+      } else if (last_color == 2) {
+        setcolor_l(255, 150, 0);
+      } else if (last_color == 3) {
+        setcolor_l(0, 255, 0);
+      } else if (last_color == 4) {
+        setcolor_l(255, 0, 0);
+      }
       return current_color;
     }
     //red tape conditions
@@ -238,6 +312,16 @@ int detect_quadrant_right() {
       }
       last_color = current_color;
       current_color = RED_Q;
+      setcolor_c(255, 0, 0);
+      if (last_color == 1){
+        setcolor_l(0,0,255);
+      } else if (last_color == 2) {
+        setcolor_l(255, 150, 0);
+      } else if (last_color == 3) {
+        setcolor_l(0, 255, 0);
+      } else if (last_color == 4) {
+        setcolor_l(255, 0, 0);
+      }
       return current_color;
     }
     //blue tape conditions
@@ -251,6 +335,16 @@ int detect_quadrant_right() {
       }
       last_color = current_color;
       current_color = BLUE_Q;
+      setcolor_c(0, 0, 255);
+      if (last_color == 1){
+        setcolor_l(0,0,255);
+      } else if (last_color == 2) {
+        setcolor_l(255, 150, 0);
+      } else if (last_color == 3) {
+        setcolor_l(0, 255, 0);
+      } else if (last_color == 4) {
+        setcolor_l(255, 0, 0);
+      }
       return current_color;
     }
     else {
@@ -344,6 +438,29 @@ void setColor(int red, int green, int blue)
   analogWrite(BLUE_PIN, blue);
 }
 
+void setcolor_c(int red, int green, int blue)
+{
+#ifdef COMMON_ANODE
+  red = 255 - red;
+  green = 255 - green;
+  blue = 255 - blue;
+#endif
+  analogWrite(RED_PIN_C, red);
+  analogWrite(GREEN_PIN_C, green);
+  analogWrite(BLUE_PIN_C, blue);
+}
+
+void setcolor_l(int red, int green, int blue)
+{
+#ifdef COMMON_ANODE
+  red = 255 - red;
+  green = 255 - green;
+  blue = 255 - blue;
+#endif
+  analogWrite(RED_PIN_L, red);
+  analogWrite(GREEN_PIN_L, green);
+  analogWrite(BLUE_PIN_L, blue);
+}
 void reverse() {
   // back the robot up
   servo_test_1.write(135);
