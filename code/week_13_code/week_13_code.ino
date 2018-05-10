@@ -68,7 +68,7 @@ void setup()
   servo_test_1.attach(SERVO_1); // attach the signal pin of servo to pin44 of arduino
   servo_test_2.attach(SERVO_2); // attach the signal pin of servo to pin45 of arduino
   micro_serve.attach(SERVO_MICRO);
-  micro_serve.write(90);
+  micro_serve.write(180);
   tcs1.begin();
   tcs2.begin();
   pixy.init();
@@ -86,16 +86,16 @@ void setup()
 void loop() {
   // put your main code here, to run repeatedly:
   drive();
-//  Serial.print("Target Color: "); Serial.print(target_color); Serial.println(" ");
-//  Serial.print("Current Color: "); Serial.print(current_color); Serial.println(" ");
-//  Serial.print("Last Color: "); Serial.print(last_color); Serial.println(" ");
+  //  Serial.print("Target Color: "); Serial.print(target_color); Serial.println(" ");
+  //  Serial.print("Current Color: "); Serial.print(current_color); Serial.println(" ");
+  //  Serial.print("Last Color: "); Serial.print(last_color); Serial.println(" ");
   detect_quadrant_left();
   detect_quadrant_right();
   straighten_left();
   straighten_right();
   int front_sensor_val = analogRead(IR_FRONT);
   sense_blocks(front_sensor_val);
-  while (has_block == true) {
+  if (has_block == true) {
     drive_home();
     detect_quadrant_left();
     detect_quadrant_right();
@@ -114,8 +114,8 @@ void drive() {
 
 int detect_quadrant_left() {
   //getting values from left RGB sensor
-  uint16_t clear, red, green, blue, colorTemp, lux;
-  tcs1.getRawData(&red, &green, &blue, &clear);
+  uint16_t c, red, green, blue, colorTemp, lux;
+  tcs1.getRawData(&red, &green, &blue, &c);
   lux = tcs1.calculateLux(red, green, blue);
   //when lux is above 150, the sensor is on the tape
   if (lux > 150) {
@@ -128,11 +128,11 @@ int detect_quadrant_left() {
         target_color = YELLOW_Q;
         setColor(255, 150, 0);
       }
-      if (current_color != YELLOW_Q){
+      if (current_color != YELLOW_Q) {
         last_color = current_color;
       }
-      if (last_color == 1){
-        setcolor_l(0,0,255);
+      if (last_color == 1) {
+        setcolor_l(0, 0, 255);
       } else if (last_color == 2) {
         setcolor_l(255, 150, 0);
       } else if (last_color == 3) {
@@ -152,10 +152,10 @@ int detect_quadrant_left() {
       delay(1000);
       rotate();
       delay(1000);
-      return 0;
+      return -1;
     }
     //green tape conditions
-    else if ((green > red) && (green > blue) && (red < 250)) {
+    else if ((green > red) && (green > blue) && (c < 550)) {
       //set the RGB LED to green
       Serial.println("green");
       //change state to green
@@ -163,11 +163,11 @@ int detect_quadrant_left() {
         target_color = GREEN_Q;
         setColor(0, 255, 0);
       }
-      if (current_color != GREEN_Q){
+      if (current_color != GREEN_Q) {
         last_color = current_color;
       }
-      if (last_color == 1){
-        setcolor_l(0,0,255);
+      if (last_color == 1) {
+        setcolor_l(0, 0, 255);
       } else if (last_color == 2) {
         setcolor_l(255, 150, 0);
       } else if (last_color == 3) {
@@ -188,11 +188,11 @@ int detect_quadrant_left() {
         target_color = RED_Q;
         setColor(255, 0, 0);
       }
-      if (current_color != RED_Q){
+      if (current_color != RED_Q) {
         last_color = current_color;
       }
-      if (last_color == 1){
-        setcolor_l(0,0,255);
+      if (last_color == 1) {
+        setcolor_l(0, 0, 255);
       } else if (last_color == 2) {
         setcolor_l(255, 150, 0);
       } else if (last_color == 3) {
@@ -213,11 +213,11 @@ int detect_quadrant_left() {
         target_color = BLUE_Q;
         setColor(0, 0, 255);
       }
-      if (current_color != BLUE_Q){
+      if (current_color != BLUE_Q) {
         last_color = current_color;
       }
-      if (last_color == 1){
-        setcolor_l(0,0,255);
+      if (last_color == 1) {
+        setcolor_l(0, 0, 255);
       } else if (last_color == 2) {
         setcolor_l(255, 150, 0);
       } else if (last_color == 3) {
@@ -241,8 +241,8 @@ int detect_quadrant_left() {
 
 int detect_quadrant_right() {
   //getting values from left RGB sensor
-  uint16_t clear, red, green, blue, colorTemp, lux;
-  tcs2.getRawData(&red, &green, &blue, &clear);
+  uint16_t c, red, green, blue, colorTemp, lux;
+  tcs2.getRawData(&red, &green, &blue, &c);
   lux = tcs2.calculateLux(red, green, blue);
   //until robot reaches tape, drive
   //when lux is above 2000, the sensor is on the tape
@@ -263,11 +263,11 @@ int detect_quadrant_right() {
         target_color = YELLOW_Q;
         setColor(255, 150, 0);
       }
-      if (current_color != YELLOW_Q){
+      if (current_color != YELLOW_Q) {
         last_color = current_color;
       }
-      if (last_color == 1){
-        setcolor_l(0,0,255);
+      if (last_color == 1) {
+        setcolor_l(0, 0, 255);
       } else if (last_color == 2) {
         setcolor_l(255, 150, 0);
       } else if (last_color == 3) {
@@ -287,10 +287,10 @@ int detect_quadrant_right() {
       delay(1000);
       rotate();
       delay(1000);
-      return 0;
+      return -1;
     }
     //green tape conditions
-    else if ((green > red) && (green > blue) && (red < 250)) {
+    else if ((green > red) && (green > blue) && (c < 550)) {
       //set the RGB LED to green
       Serial.println("green");
       //change state to green
@@ -298,11 +298,11 @@ int detect_quadrant_right() {
         target_color = GREEN_Q;
         setColor(0, 255, 0);
       }
-      if (current_color != GREEN_Q){
+      if (current_color != GREEN_Q) {
         last_color = current_color;
       }
-      if (last_color == 1){
-        setcolor_l(0,0,255);
+      if (last_color == 1) {
+        setcolor_l(0, 0, 255);
       } else if (last_color == 2) {
         setcolor_l(255, 150, 0);
       } else if (last_color == 3) {
@@ -323,11 +323,11 @@ int detect_quadrant_right() {
         target_color = RED_Q;
         setColor(255, 0, 0);
       }
-      if (current_color != RED_Q){
+      if (current_color != RED_Q) {
         last_color = current_color;
       }
-      if (last_color == 1){
-        setcolor_l(0,0,255);
+      if (last_color == 1) {
+        setcolor_l(0, 0, 255);
       } else if (last_color == 2) {
         setcolor_l(255, 150, 0);
       } else if (last_color == 3) {
@@ -348,11 +348,11 @@ int detect_quadrant_right() {
         target_color = BLUE_Q;
         setColor(0, 0, 255);
       }
-      if (current_color != BLUE_Q){
+      if (current_color != BLUE_Q) {
         last_color = current_color;
       }
-      if (last_color == 1){
-        setcolor_l(0,0,255);
+      if (last_color == 1) {
+        setcolor_l(0, 0, 255);
       } else if (last_color == 2) {
         setcolor_l(255, 150, 0);
       } else if (last_color == 3) {
@@ -422,15 +422,15 @@ void drop_lasso() {
     servo_test_1.write(135);
     servo_test_2.write(45);
     delay(100);
-    micro_serve.write(0);
+    micro_serve.write(90);
     delay(100);
     rotate();
-  delay(1000);
+    delay(1000);
   }
 }
 
 void lift_lasso() {
-  micro_serve.write(90);
+  micro_serve.write(180);
   reverse();
   delay(1000);
   rotate();
@@ -492,6 +492,11 @@ void kill_servos() {
 }
 
 void straighten_left() {
+  //  if ((detect_quadrant_left() != detect_quadrant_right()) && (detect_quadrant_right() > 0) && (detect_quadrant_left() > 0)){
+  //    servo_test_1.write(135);
+  //    servo_test_2.write(110);
+  //    delay(500);
+  //  } else
   if ((detect_quadrant_left() > 0) && (detect_quadrant_right() == 0)) {
     while ((detect_quadrant_left() != detect_quadrant_right())) {
       //Serial.println("Straighten left");
@@ -503,6 +508,12 @@ void straighten_left() {
 }
 
 void straighten_right() {
+  //  if ((detect_quadrant_left() != detect_quadrant_right()) && (detect_quadrant_right() > 0) && (detect_quadrant_left() > 0)){
+  //    Serial.println("Straightening right");
+  //    servo_test_1.write(80);
+  //    servo_test_2.write(45);
+  //    delay(500);
+  //  } else
   if ((detect_quadrant_left() == 0) && (detect_quadrant_right() > 0)) {
     while (detect_quadrant_left() != detect_quadrant_right()) {
       //Serial.println("Straighten right");
@@ -514,56 +525,86 @@ void straighten_right() {
 }
 
 void turn_left() {
-  servo_test_1.write(80);
-  servo_test_2.write(45);
-  delay(1000);
+  servo_test_1.write(135);
+  servo_test_2.write(110);
+
+
 }
 
 void turn_right() {
-  servo_test_1.write(135);
-  servo_test_2.write(110);
+  servo_test_1.write(80);
+  servo_test_2.write(45);
   delay(1000);
+  drive();
 }
 
 void drive_home() {
-  Serial.println("Honey, I'm (coming) home!");
-  if (current_color == target_color) {
-    drive();
-    delay(200);
-    lift_lasso();
-  }
-  else {
-    if ((current_color == YELLOW_Q && last_color == BLUE_Q) || (current_color == GREEN_Q && last_color == YELLOW_Q) || (current_color == RED_Q && last_color == GREEN_Q) || (current_color == BLUE_Q && last_color == RED_Q)) {
+
+  while (current_color != target_color) {
+    if ((detect_quadrant_left() > 0) || (detect_quadrant_right() > 0)) {
+      straighten_left();
+      straighten_right();
+      delay(1000);
       turn_left();
-      if (current_color == GREEN_Q) {
-        enter_straight(RED_Q);
+      delay(1000);
+      drive();
       }
-      else {
-        enter_straight((current_color + 1) % 4);
-      }
+    else if ((detect_quadrant_left == -1) || (detect_quadrant_right == -1)) {
+      reverse();
+      delay(1000);
+      turn_left();
+      delay(1000);
+      drive();  
     }
-    else {
-      turn_right();
-      if (current_color == BLUE_Q) {
-        enter_straight(RED_Q);
-      }
-      else {
-        enter_straight((current_color - 1) % 4);
-      }
-    }
+      drive();
+      detect_quadrant_left();
+      detect_quadrant_right();
+   
+  }
+  drive();
+  delay(2000);
+  lift_lasso();
+}
+
+
+void enter_straight_left() {
+//  while ((current_color != color) || (current_color != target_color) || (detect_quadrant_left() == -1) || (detect_quadrant_right() == -1)) {
+//    drive();
+//    straighten_left();
+//    straighten_right();
+//    detect_quadrant_left();
+//    detect_quadrant_right();
+//  }
+  drive();
+  straighten_left();
+  straighten_right();
+  detect_quadrant_left();
+  detect_quadrant_right();
+  if ((detect_quadrant_left() == detect_quadrant_right()) && (detect_quadrant_right() > 0)){
+    drive();
+    delay(2500);
+    turn_left();
   }
 }
 
-void enter_straight(int color) {
-  while (current_color != color) {
-    drive();
-    straighten_left();
-    straighten_right();
-    detect_quadrant_left();
-    detect_quadrant_right();
-  }
+void enter_straight_right() {
+//  while ((current_color != color) || (current_color != target_color) || (detect_quadrant_left() == -1) || (detect_quadrant_right() == -1)) {
+//    drive();
+//    straighten_left();
+//    straighten_right();
+//    detect_quadrant_left();
+//    detect_quadrant_right();
+//  }
   drive();
-  delay(1500);
+  straighten_left();
+  straighten_right();
+  detect_quadrant_left();
+  detect_quadrant_right();
+  if ((detect_quadrant_left() == detect_quadrant_right()) && (detect_quadrant_right() > 0)){
+    drive();
+    delay(2500);
+    turn_right();
+  }
 }
 
 
