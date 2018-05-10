@@ -29,13 +29,13 @@ const int RED_PIN = 8; // Red RGB LED pin for target color
 const int GREEN_PIN = 9; // Green RGB LED pin
 const int BLUE_PIN = 10; // Blue RGB LED pin
 
-const int RED_PIN_C = 17; // RGB LED pins for current color
+const int RED_PIN_C = 15; // RGB LED pins for current color
 const int GREEN_PIN_C = 16;
-const int BLUE_PIN_C = 1;
+const int BLUE_PIN_C = 17;
 
-const int RED_PIN_L = 2; // RGB LED pins for last color
+const int RED_PIN_L = 4; // RGB LED pins for last color
 const int GREEN_PIN_L = 3;
-const int BLUE_PIN_L = 4;
+const int BLUE_PIN_L = 2;
 
 
 Servo servo_test_1;
@@ -86,9 +86,9 @@ void setup()
 void loop() {
   // put your main code here, to run repeatedly:
   drive();
-  Serial.print("Target Color: "); Serial.print(target_color); Serial.println(" ");
-  Serial.print("Current Color: "); Serial.print(current_color); Serial.println(" ");
-  Serial.print("Last Color: "); Serial.print(last_color); Serial.println(" ");
+//  Serial.print("Target Color: "); Serial.print(target_color); Serial.println(" ");
+//  Serial.print("Current Color: "); Serial.print(current_color); Serial.println(" ");
+//  Serial.print("Last Color: "); Serial.print(last_color); Serial.println(" ");
   detect_quadrant_left();
   detect_quadrant_right();
   straighten_left();
@@ -147,6 +147,7 @@ int detect_quadrant_left() {
     //white tape conditions
     else if ((red > 350) && (blue > 400) && (green > 450)) {
       // back up, wait, then rotate
+      Serial.println("White");
       reverse();
       delay(1000);
       rotate();
@@ -154,7 +155,7 @@ int detect_quadrant_left() {
       return 0;
     }
     //green tape conditions
-    else if ((green > red) && (green > blue)) {
+    else if ((green > red) && (green > blue) && (red < 250)) {
       //set the RGB LED to green
       Serial.println("green");
       //change state to green
@@ -281,6 +282,7 @@ int detect_quadrant_right() {
     //white tape conditions
     else if ((red > 500) && (blue > 550) && (green > 600)) {
       // back up, wait, then rotate
+      Serial.println("White");
       reverse();
       delay(1000);
       rotate();
@@ -288,7 +290,7 @@ int detect_quadrant_right() {
       return 0;
     }
     //green tape conditions
-    else if ((green > red) && (green > blue)) {
+    else if ((green > red) && (green > blue) && (red < 250)) {
       //set the RGB LED to green
       Serial.println("green");
       //change state to green
@@ -381,12 +383,7 @@ void sense_blocks(int front_sensor_val) {
   tcs1.getRawData(&red, &green, &blue, &clear);
   lux = tcs1.calculateLux(red, green, blue);
   /*check each object detected by pixycam to see if it
-     matches thae target color (and robot is not out of bounds)
-  */
-
-
-
-  Serial.println(front_sensor_val);
+     matches thae target color (and robot is not out of bounds) */
   for (int i = 0; i < num_blocks; i++) {
     if ((pixy.blocks[i].signature == target_color)) { //&& !((red > 9000) || (blue > 9000) || (green > 9000) || (lux > 3000))) {
       //Serial.println("Found a block/Not on white tape");
@@ -438,6 +435,7 @@ void lift_lasso() {
   delay(1000);
   rotate();
   delay(1000);
+  has_block = false;
 }
 
 
@@ -518,20 +516,20 @@ void straighten_right() {
 void turn_left() {
   servo_test_1.write(80);
   servo_test_2.write(45);
-  delay(500);
+  delay(1000);
 }
 
 void turn_right() {
   servo_test_1.write(135);
   servo_test_2.write(110);
-  delay(500);
+  delay(1000);
 }
 
 void drive_home() {
+  Serial.println("Honey, I'm (coming) home!");
   if (current_color == target_color) {
     drive();
     delay(200);
-    has_block = false;
     lift_lasso();
   }
   else {
@@ -565,7 +563,7 @@ void enter_straight(int color) {
     detect_quadrant_right();
   }
   drive();
-  delay(500);
+  delay(1500);
 }
 
 
