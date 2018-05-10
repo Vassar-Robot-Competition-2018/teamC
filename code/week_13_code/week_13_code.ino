@@ -17,7 +17,7 @@ Pixy pixy;
 //constant variable declarations
 const int SERVO_1 = 13;
 const int SERVO_2 = 12;
-const int SERVO_MICRO = 0;
+const int SERVO_MICRO = 24;
 const int BLOCK = 500;
 
 const int IR_FRONT = A0;
@@ -29,9 +29,9 @@ const int RED_PIN = 8; // Red RGB LED pin for target color
 const int GREEN_PIN = 9; // Green RGB LED pin
 const int BLUE_PIN = 10; // Blue RGB LED pin
 
-const int RED_PIN_C = 5; // RGB LED pins for current color
-const int GREEN_PIN_C = 6;
-const int BLUE_PIN_C = 7;
+const int RED_PIN_C = 17; // RGB LED pins for current color
+const int GREEN_PIN_C = 16;
+const int BLUE_PIN_C = 1;
 
 const int RED_PIN_L = 2; // RGB LED pins for last color
 const int GREEN_PIN_L = 3;
@@ -86,16 +86,15 @@ void setup()
 void loop() {
   // put your main code here, to run repeatedly:
   drive();
+  Serial.print("Target Color: "); Serial.print(target_color); Serial.println(" ");
+  Serial.print("Current Color: "); Serial.print(current_color); Serial.println(" ");
+  Serial.print("Last Color: "); Serial.print(last_color); Serial.println(" ");
   detect_quadrant_left();
   detect_quadrant_right();
   straighten_left();
   straighten_right();
-
-
-
   int front_sensor_val = analogRead(IR_FRONT);
   sense_blocks(front_sensor_val);
-
   while (has_block == true) {
     drive_home();
     detect_quadrant_left();
@@ -129,9 +128,9 @@ int detect_quadrant_left() {
         target_color = YELLOW_Q;
         setColor(255, 150, 0);
       }
-      last_color = current_color;
-      current_color = YELLOW_Q;
-      setcolor_c(255, 150, 0);
+      if (current_color != YELLOW_Q){
+        last_color = current_color;
+      }
       if (last_color == 1){
         setcolor_l(0,0,255);
       } else if (last_color == 2) {
@@ -141,6 +140,8 @@ int detect_quadrant_left() {
       } else if (last_color == 4) {
         setcolor_l(255, 0, 0);
       }
+      current_color = YELLOW_Q;
+      setcolor_c(255, 150, 0);
       return current_color;
     }
     //white tape conditions
@@ -161,9 +162,9 @@ int detect_quadrant_left() {
         target_color = GREEN_Q;
         setColor(0, 255, 0);
       }
-      last_color = current_color;
-      current_color = GREEN_Q;
-      setcolor_c(0, 255, 0);
+      if (current_color != GREEN_Q){
+        last_color = current_color;
+      }
       if (last_color == 1){
         setcolor_l(0,0,255);
       } else if (last_color == 2) {
@@ -173,6 +174,8 @@ int detect_quadrant_left() {
       } else if (last_color == 4) {
         setcolor_l(255, 0, 0);
       }
+      current_color = GREEN_Q;
+      setcolor_c(0, 255, 0);
       return current_color;
     }
     //red tape conditions
@@ -184,9 +187,9 @@ int detect_quadrant_left() {
         target_color = RED_Q;
         setColor(255, 0, 0);
       }
-      last_color = current_color;
-      current_color = RED_Q;
-      setcolor_c(255, 0, 0);
+      if (current_color != RED_Q){
+        last_color = current_color;
+      }
       if (last_color == 1){
         setcolor_l(0,0,255);
       } else if (last_color == 2) {
@@ -196,6 +199,8 @@ int detect_quadrant_left() {
       } else if (last_color == 4) {
         setcolor_l(255, 0, 0);
       }
+      current_color = RED_Q;
+      setcolor_c(255, 0, 0);
       return current_color;
     }
     //blue tape conditions
@@ -207,9 +212,9 @@ int detect_quadrant_left() {
         target_color = BLUE_Q;
         setColor(0, 0, 255);
       }
-      last_color = current_color;
-      current_color = BLUE_Q;
-      setcolor_c(0, 0, 255);
+      if (current_color != BLUE_Q){
+        last_color = current_color;
+      }
       if (last_color == 1){
         setcolor_l(0,0,255);
       } else if (last_color == 2) {
@@ -219,6 +224,8 @@ int detect_quadrant_left() {
       } else if (last_color == 4) {
         setcolor_l(255, 0, 0);
       }
+      current_color = BLUE_Q;
+      setcolor_c(0, 0, 255);
       return current_color;
     }
     else {
@@ -255,9 +262,9 @@ int detect_quadrant_right() {
         target_color = YELLOW_Q;
         setColor(255, 150, 0);
       }
-      last_color = current_color;
-      current_color = YELLOW_Q;
-      setcolor_c(225, 150, 0);
+      if (current_color != YELLOW_Q){
+        last_color = current_color;
+      }
       if (last_color == 1){
         setcolor_l(0,0,255);
       } else if (last_color == 2) {
@@ -267,6 +274,8 @@ int detect_quadrant_right() {
       } else if (last_color == 4) {
         setcolor_l(255, 0, 0);
       }
+      current_color = YELLOW_Q;
+      setcolor_c(225, 150, 0);
       return current_color;
     }
     //white tape conditions
@@ -287,9 +296,9 @@ int detect_quadrant_right() {
         target_color = GREEN_Q;
         setColor(0, 255, 0);
       }
-      last_color = current_color;
-      current_color = GREEN_Q;
-      setcolor_c(0, 255, 0);
+      if (current_color != GREEN_Q){
+        last_color = current_color;
+      }
       if (last_color == 1){
         setcolor_l(0,0,255);
       } else if (last_color == 2) {
@@ -299,6 +308,8 @@ int detect_quadrant_right() {
       } else if (last_color == 4) {
         setcolor_l(255, 0, 0);
       }
+      current_color = GREEN_Q;
+      setcolor_c(0, 255, 0);
       return current_color;
     }
     //red tape conditions
@@ -310,9 +321,9 @@ int detect_quadrant_right() {
         target_color = RED_Q;
         setColor(255, 0, 0);
       }
-      last_color = current_color;
-      current_color = RED_Q;
-      setcolor_c(255, 0, 0);
+      if (current_color != RED_Q){
+        last_color = current_color;
+      }
       if (last_color == 1){
         setcolor_l(0,0,255);
       } else if (last_color == 2) {
@@ -322,6 +333,8 @@ int detect_quadrant_right() {
       } else if (last_color == 4) {
         setcolor_l(255, 0, 0);
       }
+      current_color = RED_Q;
+      setcolor_c(255, 0, 0);
       return current_color;
     }
     //blue tape conditions
@@ -333,9 +346,9 @@ int detect_quadrant_right() {
         target_color = BLUE_Q;
         setColor(0, 0, 255);
       }
-      last_color = current_color;
-      current_color = BLUE_Q;
-      setcolor_c(0, 0, 255);
+      if (current_color != BLUE_Q){
+        last_color = current_color;
+      }
       if (last_color == 1){
         setcolor_l(0,0,255);
       } else if (last_color == 2) {
@@ -345,6 +358,8 @@ int detect_quadrant_right() {
       } else if (last_color == 4) {
         setcolor_l(255, 0, 0);
       }
+      current_color = BLUE_Q;
+      setcolor_c(0, 0, 255);
       return current_color;
     }
     else {
