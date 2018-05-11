@@ -58,6 +58,10 @@ const int RED_Q = 4;
 
 
 boolean has_block = false;
+boolean turning_left = false;
+boolean turning_right = false;
+
+
 // Initialize the RGB sensors
 Adafruit_TCS34725softi2c tcs1 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_2_4MS, TCS34725_GAIN_4X, SDApin1, SCLpin1);
 Adafruit_TCS34725softi2c tcs2 = Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_2_4MS, TCS34725_GAIN_4X, SDApin2, SCLpin2);
@@ -94,11 +98,10 @@ void loop() {
   straighten_left();
   straighten_right();
   int front_sensor_val = analogRead(IR_FRONT);
-  sense_blocks(front_sensor_val);
   if (has_block == true) {
     drive_home();
-    detect_quadrant_left();
-    detect_quadrant_right();
+  } else {
+    sense_blocks(front_sensor_val);
   }
 
 }
@@ -109,6 +112,13 @@ void drive() {
   //Serial.println("Driving!!!!!!!!!!!!!!!!!!!!");
   servo_test_1.write(50);
   servo_test_2.write(134);
+}
+
+void drive_slow() {
+  // drive in a "straight" line
+  //Serial.println("Driving!!!!!!!!!!!!!!!!!!!!");
+  servo_test_1.write(72);
+  servo_test_2.write(112);
 }
 
 
@@ -122,7 +132,6 @@ int detect_quadrant_left() {
     //yellow tape conditions
     if ((red > blue) && (green > blue) && ((red - blue) > 100)) {
       //set the RGB LED to yellow
-      Serial.println("yellow");
       //change state to yellow
       if (target_color == 0) {
         target_color = YELLOW_Q;
@@ -147,7 +156,6 @@ int detect_quadrant_left() {
     //white tape conditions
     else if ((red > 350) && (blue > 400) && (green > 450)) {
       // back up, wait, then rotate
-      Serial.println("White");
       reverse();
       delay(1000);
       rotate();
@@ -157,7 +165,6 @@ int detect_quadrant_left() {
     //green tape conditions
     else if ((green > red) && (green > blue) && (c < 550)) {
       //set the RGB LED to green
-      Serial.println("green");
       //change state to green
       if (target_color == 0) {
         target_color = GREEN_Q;
@@ -182,7 +189,6 @@ int detect_quadrant_left() {
     //red tape conditions
     else if ((red > green) && (red > blue)) {
       //set the RGB LED to red
-
       //change state to red
       if (target_color == 0) {
         target_color = RED_Q;
@@ -257,7 +263,6 @@ int detect_quadrant_right() {
     //yellow tape conditions
     if ((red > blue) && (green > blue) && ((red - blue) > 100)) {
       //set the RGB LED to yellow
-      Serial.println("yellow");
       //change state to yellow
       if (target_color == 0) {
         target_color = YELLOW_Q;
@@ -282,7 +287,6 @@ int detect_quadrant_right() {
     //white tape conditions
     else if ((red > 500) && (blue > 550) && (green > 600)) {
       // back up, wait, then rotate
-      Serial.println("White");
       reverse();
       delay(1000);
       rotate();
@@ -292,7 +296,6 @@ int detect_quadrant_right() {
     //green tape conditions
     else if ((green > red) && (green > blue) && (c < 550)) {
       //set the RGB LED to green
-      Serial.println("green");
       //change state to green
       if (target_color == 0) {
         target_color = GREEN_Q;
@@ -342,7 +345,6 @@ int detect_quadrant_right() {
     //blue tape conditions
     else if ((blue > green) && (blue > red)) {
       //set the RGB LED to blue
-
       //change state to blue
       if (target_color == 0) {
         target_color = BLUE_Q;
@@ -424,15 +426,13 @@ void drop_lasso() {
     delay(100);
     micro_serve.write(90);
     delay(100);
-    rotate();
-    delay(1000);
   }
 }
 
 void lift_lasso() {
   micro_serve.write(180);
   reverse();
-  delay(1000);
+  delay(500);
   rotate();
   delay(1000);
   has_block = false;
@@ -498,12 +498,13 @@ void straighten_left() {
   //    delay(500);
   //  } else
   if ((detect_quadrant_left() > 0) && (detect_quadrant_right() == 0)) {
-    while ((detect_quadrant_left() != detect_quadrant_right())) {
+    while ((detect_quadrant_left() != detect_quadrant_right()) && (detect_quadrant_right() == 0 || detect_quadrant_left() == 0)) {
       //Serial.println("Straighten left");
       servo_test_1.write(135);
       servo_test_2.write(110);
+      detect_quadrant_left();
+      detect_quadrant_right();
     }
-    drive();
   }
 }
 
@@ -515,97 +516,253 @@ void straighten_right() {
   //    delay(500);
   //  } else
   if ((detect_quadrant_left() == 0) && (detect_quadrant_right() > 0)) {
-    while (detect_quadrant_left() != detect_quadrant_right()) {
+    while ((detect_quadrant_left() != detect_quadrant_right()) && (detect_quadrant_right() == 0 || detect_quadrant_left() == 0)) {
       //Serial.println("Straighten right");
       servo_test_1.write(80);
       servo_test_2.write(45);
+      detect_quadrant_left();
+      detect_quadrant_right();
     }
-    drive();
   }
 }
 
 void turn_left() {
   servo_test_1.write(135);
   servo_test_2.write(110);
-
-
+  delay(1000);
 }
 
 void turn_right() {
   servo_test_1.write(80);
   servo_test_2.write(45);
   delay(1000);
-  drive();
 }
 
 void drive_home() {
 
   while (current_color != target_color) {
-    if ((detect_quadrant_left() > 0) || (detect_quadrant_right() > 0)) {
-      straighten_left();
-      straighten_right();
-      delay(1000);
+    drive();
+    detect_quadrant_left();
+    detect_quadrant_right();
+    straighten_left();
+    straighten_right();
+    if ((current_color == YELLOW_Q && last_color == BLUE_Q) || (current_color == GREEN_Q && last_color == YELLOW_Q) || (current_color == RED_Q && last_color == GREEN_Q) || (current_color == BLUE_Q && last_color == RED_Q)) {
+      turning_left = true;
+      turning_right = false;
       turn_left();
-      delay(1000);
       drive();
+      while (detect_quadrant_left() == 0 && detect_quadrant_right() == 0) {
+        drive();
+        Serial.println("Driving towards tape");
+        detect_quadrant_left();
+        detect_quadrant_right();
+        straighten_left();
+        straighten_right();
       }
-    else if ((detect_quadrant_left == -1) || (detect_quadrant_right == -1)) {
-      reverse();
-      delay(1000);
-      turn_left();
-      delay(1000);
-      drive();  
-    }
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(500);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      while ((detect_quadrant_left() != 0 || detect_quadrant_right() != 0)  && (detect_quadrant_left() == detect_quadrant_right())){
+        drive_slow();
+        Serial.println("Entering new quadrant!");
+        detect_quadrant_left();
+        detect_quadrant_right();
+        straighten_left();
+        straighten_right();
+      }
       drive();
       detect_quadrant_left();
       detect_quadrant_right();
-   
+      delay(1500);  
+    } else if ((current_color == BLUE_Q && last_color == YELLOW_Q) || (current_color == YELLOW_Q && last_color == GREEN_Q) || (current_color == GREEN_Q && last_color == RED_Q) || (current_color == RED_Q && last_color == BLUE_Q)) {
+      turning_left = false;
+      turning_right = true;
+      turn_right();
+      drive();
+      while (detect_quadrant_left() == 0 && detect_quadrant_right() == 0) {
+        drive();
+        Serial.println("Driving towards tape");        
+        detect_quadrant_left();
+        detect_quadrant_right();
+        straighten_left();
+        straighten_right();
+      }
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      kill_servos();
+      delay(100);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      drive_slow();
+      delay(500);
+      detect_quadrant_left();
+      detect_quadrant_right();
+      while ((detect_quadrant_left() != 0 || detect_quadrant_right() != 0)  && (detect_quadrant_left() == detect_quadrant_right())){
+        drive_slow();
+        Serial.println("Entering new quadrant!");
+        detect_quadrant_left();
+        detect_quadrant_right();
+        straighten_left();
+        straighten_right();
+      }
+      drive();
+      detect_quadrant_left();
+      detect_quadrant_right();
+      delay(1500);
+    }
   }
   drive();
-  delay(2000);
+  delay(1000);
   lift_lasso();
 }
 
 
-void enter_straight_left() {
-//  while ((current_color != color) || (current_color != target_color) || (detect_quadrant_left() == -1) || (detect_quadrant_right() == -1)) {
+//void enter_straight_left() {
+////  while ((current_color != color) || (current_color != target_color) || (detect_quadrant_left() == -1) || (detect_quadrant_right() == -1)) {
+////    drive();
+////    straighten_left();
+////    straighten_right();
+////    detect_quadrant_left();
+////    detect_quadrant_right();
+////  }
+//  drive();
+//  straighten_left();
+//  straighten_right();
+//  detect_quadrant_left();
+//  detect_quadrant_right();
+//  if ((detect_quadrant_left() == detect_quadrant_right()) && (detect_quadrant_right() > 0)){
 //    drive();
-//    straighten_left();
-//    straighten_right();
-//    detect_quadrant_left();
-//    detect_quadrant_right();
+//    delay(2500);
+//    turn_left();
 //  }
-  drive();
-  straighten_left();
-  straighten_right();
-  detect_quadrant_left();
-  detect_quadrant_right();
-  if ((detect_quadrant_left() == detect_quadrant_right()) && (detect_quadrant_right() > 0)){
-    drive();
-    delay(2500);
-    turn_left();
-  }
-}
-
-void enter_straight_right() {
-//  while ((current_color != color) || (current_color != target_color) || (detect_quadrant_left() == -1) || (detect_quadrant_right() == -1)) {
+//}
+//
+//void enter_straight_right() {
+////  while ((current_color != color) || (current_color != target_color) || (detect_quadrant_left() == -1) || (detect_quadrant_right() == -1)) {
+////    drive();
+////    straighten_left();
+////    straighten_right();
+////    detect_quadrant_left();
+////    detect_quadrant_right();
+////  }
+//  drive();
+//  straighten_left();
+//  straighten_right();
+//  detect_quadrant_left();
+//  detect_quadrant_right();
+//  if ((detect_quadrant_left() == detect_quadrant_right()) && (detect_quadrant_right() > 0)){
 //    drive();
-//    straighten_left();
-//    straighten_right();
-//    detect_quadrant_left();
-//    detect_quadrant_right();
+//    delay(2500);
+//    turn_right();
 //  }
-  drive();
-  straighten_left();
-  straighten_right();
-  detect_quadrant_left();
-  detect_quadrant_right();
-  if ((detect_quadrant_left() == detect_quadrant_right()) && (detect_quadrant_right() > 0)){
-    drive();
-    delay(2500);
-    turn_right();
-  }
-}
-
-
-
+//}
+//
+//
+//
